@@ -2,6 +2,7 @@
 /bower_components/
 /dist/
 
+.eslintrc.json
 .DS_Store
 .DS_Store?
 ._*
