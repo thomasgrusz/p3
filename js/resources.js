@@ -6,7 +6,7 @@
  */
 (function() {
     var resourceCache = {};
-    var loading = [];
+    var loading = [];           // eslint-disable-line
     var readyCallbacks = [];
 
     /* This is the publicly accessible image loading function. It accepts
