@@ -21,12 +21,12 @@ Enemy.prototype.update = function(dt) {
 
 // Check if enemy and player collide, if yes place player to origin and reset all enemies
     collision_detect(this);
-    if (collision_flag === true) {
+    if (collisionFlag === true) {
         player.update();
         allEnemies.forEach(function(enemy) {
             enemyInit(enemy);
         });
-        collision_flag = false;
+        collisionFlag = false;
     }
 };
 
@@ -47,15 +47,18 @@ var Player = function() {
     this.speed = 20;
     this.sprite = 'images/char-boy.png';
 };
+// Update player
 Player.prototype.update = function() {
-    if (collision_flag === true) {
+    if (collisionFlag === true) {
         player.x = playerXOrigin;
         player.y = playerYOrigin;
     }
 };
+// Render player
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);  // eslint-disable-line
 };
+// Handle player input from keyboard
 Player.prototype.handleInput = function(direction) {
     if (direction === 'left' && this.x > playerLeftBorder) {
         this.x = this.x - playerXStep;
@@ -69,6 +72,9 @@ Player.prototype.handleInput = function(direction) {
             this.x = playerXOrigin;
             this.y = playerYOrigin;
         }
+    } else if (direction === 'space') {
+        pauseFlag = !pauseFlag;
+        console.log(pauseFlag);
     }
 };
 
@@ -82,22 +88,22 @@ Player.prototype.handleInput = function(direction) {
 // Initialize an enemy (x,y,speed)
 function enemyInit(enemy) {
     enemy.x = enemyXOrigin;
-    enemy.y = enemy_y_coords[random_number(0, 2)];
+    enemy.y = enemyYCoords[random_number(0, 2)];
     enemy.speed = random_number(enemyMinSpeed, enemyMaxSpeed);
 }
 
 // Detect collision between enemy and player
 function collision_detect(enemy) {
     for (var j = 0; j<= 2; j++) {
-        if (enemy.y === enemy_y_coords[j] && player.y === player_y_collision_coords[j]) {
+        if (enemy.y === enemyYCoords[j] && player.y === playerYCollisionCcoords[j]) {
             if (enemy.x > player.x) {
                 if (enemy.x < (player.x + charWidth)) {
-                    collision_flag = true;
+                    collisionFlag = true;
                 }
             }
             if (player.x > enemy.x) {
                 if (player.x < (enemy.x + charWidth)) {
-                    collision_flag = true;
+                    collisionFlag = true;
                 }
             }
         }
@@ -117,7 +123,8 @@ function random_number(lower, upper) {
 *   Define all global controll variables
 *
 */
-var collision_flag = false;
+var collisionFlag = false;
+var pauseFlag = false;
 
 var enemyNumber = 3;
 var enemyXOrigin = -100;
@@ -126,7 +133,7 @@ var enemyMinSpeed = 100;
 var enemyMaxSpeed = 400;
 var allEnemies = [];
 
-var enemy_y_coords = [60, 143, 226];
+var enemyYCoords = [60, 143, 226];
 
 var playerXOrigin = 201;
 var playerYOrigin = 404;
@@ -137,7 +144,7 @@ var playerRightBorder = 401;
 var playerUpperBorder = -11;
 var playerLowerBorder = 404;
 
-var player_y_collision_coords = [72, 155, 238];
+var playerYCollisionCcoords = [72, 155, 238];
 
 var waterBorder = 72;
 var charWidth = 70;
@@ -165,7 +172,8 @@ document.addEventListener('keyup', function(e) {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+        32: 'space'
     };
 
     player.handleInput(allowedKeys[e.keyCode]);

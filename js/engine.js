@@ -42,11 +42,14 @@ var Engine = (function(global) {
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
-        /* Call our update/render functions, pass along the time delta to
-         * our update function since it may be used for smooth animation.
+        /* Check whether the game is paused and if not call our update/render
+         * functions, pass along the time delta to our update function since
+         * it may be used for smooth animation.
          */
-        update(dt);
-        render();
+        if (pauseFlag === false) {
+            update(dt);
+            render();
+        }
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
