@@ -1,26 +1,31 @@
 /*
-*
-*   Define Enemy class and corresponding prototype methods
-*
-*/
+ *
+ *   Define Enemy class and corresponding prototype methods
+ *
+ */
 var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
     enemyInit(this);
 };
 
-
-// Update the x,y coordinates of an enemy and check for collision with player
+/* Update the x,y coordinates of an enemy and check for
+ * collision with player
+ */
 Enemy.prototype.update = function(dt) {
 
-// Check if enemy leaves the window and if yes, start again at random y-axis and random speed
+    /* Check if enemy leaves the window and if yes, start again at
+     * random y-axis and random speed
+     */
     if (this.x < enemyXMax) {
         this.x = this.x + (this.speed * dt);
     } else {
         enemyInit(this);
     }
 
-// Check if enemy and player collide, if yes place player to origin and reset all enemies
-    collision_detect(this);
+    /* Check if enemy and player collide, if yes place player to
+     * origin and reset all enemies
+     */
+    collisionEnemyDetect(this);
     if (collisionFlag === true) {
         player.update();
         allEnemies.forEach(function(enemy) {
@@ -30,35 +35,43 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
-// Render an enemy
+/* Render an enemy
+ */
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 
+
 /*
-*
-*   Define Player class and corresponding prototype methods
-*
-*/
+ *
+ *   Define Player class and corresponding prototype methods
+ *
+ */
 var Player = function() {
     this.x = playerXOrigin;
     this.y = playerYOrigin;
     this.speed = 20;
     this.sprite = 'images/char-boy.png';
 };
-// Update player
+
+/* Update player
+ */
 Player.prototype.update = function() {
     if (collisionFlag === true) {
         player.x = playerXOrigin;
         player.y = playerYOrigin;
     }
 };
-// Render player
+
+/* Render player
+ */
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);  // eslint-disable-line
 };
-// Handle player input from keyboard
+
+/* Handle player input from keyboard
+ */
 Player.prototype.handleInput = function(direction) {
     if (direction === 'left' && this.x > playerLeftBorder) {
         this.x = this.x - playerXStep;
@@ -74,26 +87,28 @@ Player.prototype.handleInput = function(direction) {
         }
     } else if (direction === 'space') {
         pauseFlag = !pauseFlag;
-        console.log(pauseFlag);
     }
 };
 
 
-/*
-*
-*   Helper Methods
-*
-*/
 
-// Initialize an enemy (x,y,speed)
+/*
+ *
+ *   Helper Methods
+ *
+ */
+
+/* Initialize an enemy (x,y,speed)
+ */
 function enemyInit(enemy) {
     enemy.x = enemyXOrigin;
     enemy.y = enemyYCoords[random_number(0, 2)];
     enemy.speed = random_number(enemyMinSpeed, enemyMaxSpeed);
 }
 
-// Detect collision between enemy and player
-function collision_detect(enemy) {
+/* Detect collision between enemy and player
+ */
+function collisionEnemyDetect(enemy) {
     for (var j = 0; j<= 2; j++) {
         if (enemy.y === enemyYCoords[j] && player.y === playerYCollisionCcoords[j]) {
             if (enemy.x > player.x) {
@@ -111,18 +126,20 @@ function collision_detect(enemy) {
 }
 
 
-// Create random numbers between 'lower' and 'upper' 
+/* Create random numbers between 'lower' and 'upper'
+ */
 function random_number(lower, upper) {
     upper += 1;
     return lower + Math.floor((Math.random() * upper));
 }
 
 
+
 /*
-*
-*   Define all global controll variables
-*
-*/
+ *
+ *   Define all global controll variables
+ *
+ */
 var collisionFlag = false;
 var pauseFlag = false;
 
@@ -150,23 +167,24 @@ var waterBorder = 72;
 var charWidth = 70;
 
 
+
 /*
-*   Instantiate objects by
-*   Define all global controll variables
-*   placing all enemies into an array called 'allEnemies' and
-*   placeing player object into a variable called 'player'
-*/
+ *   Instantiate objects by
+ *   - placing all enemies into an array called 'allEnemies' and
+ *   - placeing player object into a variable called 'player'
+ */
 for (var i = 1; i <= enemyNumber; i++) {
     allEnemies.push(new Enemy());
 }
 var player = new Player;
 
 
+
 /*
-*
-*  Listen for key strokes and send keys to Player.handleInput() method.
-*
-*/
+ *
+ *  Listen for key strokes and send keys to Player.handleInput() method.
+ *
+ */
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
