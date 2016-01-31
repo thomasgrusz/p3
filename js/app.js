@@ -26,12 +26,12 @@ Enemy.prototype.update = function(dt) {
      * origin and reset all enemies
      */
     collisionEnemyDetect(this);
-    if (collisionFlag === true) {
+    if (collisionFlagEnemy === true) {
         player.update();
         allEnemies.forEach(function(enemy) {
             enemyInit(enemy);
         });
-        collisionFlag = false;
+        collisionFlagEnemy = false;
     }
 };
 
@@ -58,9 +58,13 @@ var Player = function() {
 /* Update player
  */
 Player.prototype.update = function() {
-    if (collisionFlag === true) {
+    if (collisionFlagEnemy === true) {
         player.x = playerXOrigin;
         player.y = playerYOrigin;
+    }
+    if (this.y < waterBorder) {
+        this.x = playerXOrigin;
+        this.y = playerYOrigin;
     }
 };
 
@@ -81,10 +85,6 @@ Player.prototype.handleInput = function(direction) {
         this.y = this.y + playerYStep;
     } else if (direction === 'up' && this.y > playerUpperBorder) {
         this.y = this.y - playerYStep;
-        if (this.y < waterBorder) {
-            this.x = playerXOrigin;
-            this.y = playerYOrigin;
-        }
     } else if (direction === 'space') {
         pauseFlag = !pauseFlag;
     }
@@ -113,12 +113,12 @@ function collisionEnemyDetect(enemy) {
         if (enemy.y === enemyYCoords[j] && player.y === playerYCollisionCcoords[j]) {
             if (enemy.x > player.x) {
                 if (enemy.x < (player.x + charWidth)) {
-                    collisionFlag = true;
+                    collisionFlagEnemy = true;
                 }
             }
             if (player.x > enemy.x) {
                 if (player.x < (enemy.x + charWidth)) {
-                    collisionFlag = true;
+                    collisionFlagEnemy = true;
                 }
             }
         }
@@ -140,8 +140,9 @@ function random_number(lower, upper) {
  *   Define all global controll variables
  *
  */
-var collisionFlag = false;
+var collisionFlagEnemy = false;
 var pauseFlag = false;
+var waterReachedFlag = false;
 
 var enemyNumber = 3;
 var enemyXOrigin = -100;
