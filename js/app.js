@@ -79,6 +79,8 @@ Player.prototype.handleInput = function(direction) {
         this.y = this.y - playerYStep;
     } else if (direction === 'space') {
         pauseFlag = !pauseFlag;
+    } else if (direction === 'return') {
+        selectPlayerFlag = true;
     }
 };
 
@@ -126,19 +128,25 @@ function updateScore() {
 /* Render score
  */
 function renderScore() {
+    ctx.fillStyle = 'lightgreen'
+    ctx.beginPath();
+    ctx.moveTo(290, 545);
+    ctx.lineTo(480,545);
+    ctx.quadraticCurveTo(490, 545, 490, 555);
+    ctx.lineTo(490, 575);
+    ctx.quadraticCurveTo(490, 585, 480, 585);
+    ctx.lineTo(290, 585);
+    ctx.quadraticCurveTo(280, 585, 280, 575);
+    ctx.lineTo(280, 555);
+    ctx.quadraticCurveTo(280, 545, 290, 545);
+    ctx.fill();
     // ctx.fillStyle = 'green';
     // ctx.fillRect(304, 545, 200, 40);
     ctx.font = '32pt Lobster';
-    ctx.fillStyle = 'white';
-    ctx.fillText('Score: ', 310, 580);
+    ctx.fillStyle = 'green';
+    ctx.fillText('Score: ', 290, 580);
+    ctx.fillText(score, 400, 580);
     ctx.lineWidth = 3;
-    ctx.fillStyle = 'black';
-    ctx.strokeText('Score: ', 310, 580);
-    ctx.fillStyle = 'white';
-    ctx.fillText(score, 420, 580);
-    ctx.lineWidth = 3;
-    ctx.fillStyle = 'black';
-    ctx.strokeText(score, 420, 580);
 }
 
 /*
@@ -149,6 +157,7 @@ function renderScore() {
 var collisionFlagEnemy = false;
 var pauseFlag = false;
 var waterReachedFlag = false;
+var selectPlayerFlag = false;
 
 var enemyNumber = 3;
 var enemyXOrigin = -100;
@@ -196,7 +205,8 @@ document.addEventListener('keyup', function(e) {
         38: 'up',
         39: 'right',
         40: 'down',
-        32: 'space'
+        32: 'space',
+        13: 'return'
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
