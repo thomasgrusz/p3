@@ -21,27 +21,13 @@ Enemy.prototype.update = function(dt) {
     } else {
         enemyInit(this);
     }
-
-    /* Check if enemy and player collide, if yes place player to
-     * origin and reset all enemies
-     */
-    collisionEnemyDetect(this);
-    if (collisionFlagEnemy === true) {
-        player.update();
-        allEnemies.forEach(function(enemy) {
-            enemyInit(enemy);
-        });
-        collisionFlagEnemy = false;
-    }
 };
 
-/* Render an enemy
+/* Render one enemy
  */
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-
-
 
 /*
  *
@@ -51,7 +37,6 @@ Enemy.prototype.render = function() {
 var Player = function() {
     this.x = playerXOrigin;
     this.y = playerYOrigin;
-    this.speed = 20;
     this.sprite = 'images/char-boy.png';
 };
 
@@ -61,6 +46,7 @@ Player.prototype.update = function() {
     if (collisionFlagEnemy === true) {
         player.x = playerXOrigin;
         player.y = playerYOrigin;
+        collisionFlagEnemy = false;
     }
     if (this.y < waterBorder) {
         this.x = playerXOrigin;
@@ -71,7 +57,7 @@ Player.prototype.update = function() {
 /* Render player
  */
 Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);  // eslint-disable-line
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 /* Handle player input from keyboard
@@ -89,8 +75,6 @@ Player.prototype.handleInput = function(direction) {
         pauseFlag = !pauseFlag;
     }
 };
-
-
 
 /*
  *
@@ -125,15 +109,12 @@ function collisionEnemyDetect(enemy) {
     }
 }
 
-
 /* Create random numbers between 'lower' and 'upper'
  */
 function random_number(lower, upper) {
     upper += 1;
     return lower + Math.floor((Math.random() * upper));
 }
-
-
 
 /*
  *
@@ -170,7 +151,7 @@ var charWidth = 70;
 
 
 /*
- *   Instantiate objects by
+ *   Instantiate entities by
  *   - placing all enemies into an array called 'allEnemies' and
  *   - placeing player object into a variable called 'player'
  */

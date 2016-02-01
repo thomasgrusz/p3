@@ -83,7 +83,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -98,6 +98,15 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+    }
+
+    function checkCollisions() {
+        
+        /* Check collisions between player and all enemies
+         */
+        allEnemies.forEach(function(enemy) {
+            collisionEnemyDetect(enemy);
+        });
     }
 
     /* This function initially draws the "game level", it will then call
