@@ -192,9 +192,13 @@ var Engine = (function(global) {
 
 function selectPlayer() {
     renderBackground();
+
+    /* Draw white background panel with green outline
+     */
     ctx.lineWidth = 5;
     ctx.strokeStyle = 'green'
     ctx.fillStyle = 'white';
+
     ctx.beginPath();
     ctx.moveTo(30, 200);
     ctx.lineTo(475,200);
@@ -219,6 +223,9 @@ function selectPlayer() {
     ctx.quadraticCurveTo(20, 200, 30, 200);
     ctx.stroke();
 
+
+    /* Draw player characters
+     */
     var playerImages = [
         'images/char-boy.png',
         'images/char-cat-girl.png',
@@ -230,8 +237,31 @@ function selectPlayer() {
         ctx.drawImage(Resources.get(playerImages[i]), 20+i*90, 180);
     }
 
+    ctx.font = '20pt Lobster';
+    ctx.fillStyle = 'green';
+    ctx.fillText('select your hero and press ENTER!', 75, 400);
 
+    drawSelectorBox(selectorBox[selectorBoxX]);
 }
+
+    /* This function is called by the selectPlayer() function and
+     * draws a lightgreen selector outline around characters, that
+     * can be moved laterally with the arrow key.
+     */
+    function drawSelectorBox(x) {
+        ctx.strokeStyle = 'lightgreen';
+        ctx.beginPath();
+        ctx.moveTo(x, 220);
+        ctx.lineTo(x+63,220);
+        ctx.quadraticCurveTo(x+73, 220, x+73, 230);
+        ctx.lineTo(x+73, 340);
+        ctx.quadraticCurveTo(x+73, 350, x+63, 350);
+        ctx.lineTo(x, 350);
+        ctx.quadraticCurveTo(x-10, 350, x-10, 340);
+        ctx.lineTo(x-10, 230);
+        ctx.quadraticCurveTo(x-10, 220, x, 220);
+        ctx.stroke();
+    }
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when

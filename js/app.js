@@ -69,18 +69,39 @@ Player.prototype.render = function() {
 /* Handle player input from keyboard
  */
 Player.prototype.handleInput = function(direction) {
-    if (direction === 'left' && this.x > playerLeftBorder) {
-        this.x = this.x - playerXStep;
-    } else if (direction === 'right' && this.x < playerRightBorder) {
-        this.x = this.x + playerXStep;
-    } else if (direction === 'down' && this.y < playerLowerBorder) {
-        this.y = this.y + playerYStep;
-    } else if (direction === 'up' && this.y > playerUpperBorder) {
-        this.y = this.y - playerYStep;
-    } else if (direction === 'space') {
-        pauseFlag = !pauseFlag;
-    } else if (direction === 'return') {
+    /* Checks if left or right keys have been pressed at
+     * the startscreen and moves the lightgreen selectorbox
+     * from character to character
+     */
+    if (direction === 'left' && selectorBoxX > 0) {
+        selectorBoxX = selectorBoxX - 1;
+    } else if (direction === 'left' && selectorBoxX === 0) {
+        selectorBoxX = 4;
+    }
+    if (direction === 'right' && selectorBoxX < 4) {
+        selectorBoxX = selectorBoxX + 1;
+    } else if (direction === 'right' && selectorBoxX === 4) {
+        selectorBoxX = 0;
+    }
+    if (direction === 'return') {
         selectPlayerFlag = true;
+    }
+
+    /* Check for keyboard input during game and move character
+     * accordingly. Also check for spacebar to pause game.
+     */
+    if (selectPlayerFlag === true) {
+        if (direction === 'left' && this.x > playerLeftBorder) {
+            this.x = this.x - playerXStep;
+        } else if (direction === 'right' && this.x < playerRightBorder) {
+            this.x = this.x + playerXStep;
+        } else if (direction === 'down' && this.y < playerLowerBorder) {
+            this.y = this.y + playerYStep;
+        } else if (direction === 'up' && this.y > playerUpperBorder) {
+            this.y = this.y - playerYStep;
+        } else if (direction === 'space') {
+            pauseFlag = !pauseFlag;
+        }
     }
 };
 
@@ -140,8 +161,6 @@ function renderScore() {
     ctx.lineTo(280, 555);
     ctx.quadraticCurveTo(280, 545, 290, 545);
     ctx.fill();
-    // ctx.fillStyle = 'green';
-    // ctx.fillRect(304, 545, 200, 40);
     ctx.font = '32pt Lobster';
     ctx.fillStyle = 'green';
     ctx.fillText('Score: ', 290, 580);
@@ -183,6 +202,8 @@ var waterBorder = 72;
 var enemyWidth = 98;
 var charWidth = 67;
 var score = 0;
+var selectorBoxX = 0;
+var selectorBox = [40, 130, 215, 310, 400];
 
 /*
  *   Instantiate entities by
