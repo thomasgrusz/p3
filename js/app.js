@@ -96,7 +96,7 @@ function collisionEnemyDetect(enemy) {
     for (var j = 0; j<= 2; j++) {
         if (enemy.y === enemyYCoords[j] && player.y === playerYCollisionCcoords[j]) {
             if (enemy.x > player.x) {
-                if (enemy.x < (player.x + charWidth)) {
+                if (enemy.x < (player.x + enemyWidth)) {
                     collisionFlagEnemy = true;
                 }
             }
@@ -146,7 +146,8 @@ var playerLowerBorder = 404;
 var playerYCollisionCcoords = [72, 155, 238];
 
 var waterBorder = 72;
-var charWidth = 70;
+var enemyWidth = 98;
+var charWidth = 67;
 
 
 
