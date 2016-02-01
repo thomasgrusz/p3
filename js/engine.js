@@ -46,10 +46,10 @@ var Engine = (function(global) {
          * functions, pass along the time delta to our update function since
          * it may be used for smooth animation.
          */
-        if (pauseFlag === false) {
+        if (pauseFlag === false && selectPlayerFlag === true) {
             update(dt);
             render();
-        }
+        } else selectPlayer();
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -64,7 +64,8 @@ var Engine = (function(global) {
 
     /* This function does some initial setup that should only occur once,
      * particularly setting the lastTime variable that is required for the
-     * game loop.
+     * game loop. Further, it initializes all enemies' x,y-coordinates, and
+     * and speed. It also calls the selectPlacer function.
      */
     function init() {
         reset();
@@ -101,6 +102,7 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
+
         player.update();
     }
 
@@ -113,13 +115,18 @@ var Engine = (function(global) {
         });
     }
 
-    /* This function initially draws the "game level", it will then call
-     * the renderEntities function. Remember, this function is called every
-     * game tick (or loop of the game engine) because that's how games work -
-     * they are flipbooks creating the illusion of animation but in reality
-     * they are just drawing the entire screen over and over.
+    /* This function initially calls the background render function,
+     * it will then call the renderEntities function.
      */
     function render() {
+        renderBackground();
+        renderEntities();
+    }
+
+    /* This function is called by the render function and
+     * draws the background.
+     */
+    function renderBackground() {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
@@ -151,8 +158,6 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-
-        renderEntities();
     }
 
     /* This function is called by the render function and is called on each game
@@ -170,13 +175,61 @@ var Engine = (function(global) {
         renderScore();
     }
 
-    /* This function does nothing but it could have been a good place to
+    /* This function does nothing but it could have been a good place to.lineTo(, 555);
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
         // noop
     }
+
+    /* This function is called by the init function and first draws a white
+     * rounded square, displaying all player-characters to choose from.
+     * The player can be selected via arrow keys and selected by hitting return
+     */
+
+function selectPlayer() {
+    renderBackground();
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = 'green'
+    ctx.fillStyle = 'white';
+    ctx.beginPath();
+    ctx.moveTo(30, 200);
+    ctx.lineTo(475,200);
+    ctx.quadraticCurveTo(485, 200, 485, 210);
+    ctx.lineTo(485, 410);
+    ctx.quadraticCurveTo(485, 420, 475, 420);
+    ctx.lineTo(30, 420);
+    ctx.quadraticCurveTo(20, 420, 20, 410);
+    ctx.lineTo(20, 210);
+    ctx.quadraticCurveTo(20, 200, 30, 200);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(30, 200);
+    ctx.lineTo(475,200);
+    ctx.quadraticCurveTo(485, 200, 485, 210);
+    ctx.lineTo(485, 410);
+    ctx.quadraticCurveTo(485, 420, 475, 420);
+    ctx.lineTo(30, 420);
+    ctx.quadraticCurveTo(20, 420, 20, 410);
+    ctx.lineTo(20, 210);
+    ctx.quadraticCurveTo(20, 200, 30, 200);
+    ctx.stroke();
+
+    var playerImages = [
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png'
+    ];
+    for (var i = 0; i < playerImages.length; i++) {
+        ctx.drawImage(Resources.get(playerImages[i]), 20+i*90, 180);
+    }
+
+
+}
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
@@ -187,7 +240,11 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png'
     ]);
     Resources.onReady(init);
 
