@@ -87,6 +87,7 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         checkCollisions();
+        updateScore();
     }
 
     /* This is called by the update function and loops through all of the
@@ -165,8 +166,8 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
-
         player.render();
+        renderScore();
     }
 
     /* This function does nothing but it could have been a good place to

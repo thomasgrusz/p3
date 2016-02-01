@@ -56,6 +56,7 @@ Player.prototype.update = function() {
     if (this.y < waterBorder) {
         this.x = playerXOrigin;
         this.y = playerYOrigin;
+        waterReachedFlag = true;
     }
 };
 
@@ -113,6 +114,33 @@ function random_number(lower, upper) {
     return lower + Math.floor((Math.random() * upper));
 }
 
+/* Update score
+ */
+function updateScore() {
+    if (waterReachedFlag === true) {
+        score = score + 10;
+        waterReachedFlag = false;
+    }
+}
+
+/* Render score
+ */
+function renderScore() {
+    // ctx.fillStyle = 'green';
+    // ctx.fillRect(304, 545, 200, 40);
+    ctx.font = '32pt Lobster';
+    ctx.fillStyle = 'white';
+    ctx.fillText('Score: ', 310, 580);
+    ctx.lineWidth = 3;
+    ctx.fillStyle = 'black';
+    ctx.strokeText('Score: ', 310, 580);
+    ctx.fillStyle = 'white';
+    ctx.fillText(score, 420, 580);
+    ctx.lineWidth = 3;
+    ctx.fillStyle = 'black';
+    ctx.strokeText(score, 420, 580);
+}
+
 /*
  *
  *   Define all global controll variables
@@ -145,8 +173,7 @@ var playerYCollisionCcoords = [72, 155, 238];
 var waterBorder = 72;
 var enemyWidth = 98;
 var charWidth = 67;
-
-
+var score = 0;
 
 /*
  *   Instantiate entities by
@@ -157,8 +184,6 @@ for (var i = 1; i <= enemyNumber; i++) {
     allEnemies.push(new Enemy());
 }
 var player = new Player;
-
-
 
 /*
  *
