@@ -187,7 +187,7 @@ var Engine = (function(global) {
 
     /* This function is called by the main() function and first draws a white
      * rounded square, displaying all player-characters to choose from.
-     * The player can be selected via arrow keys and selected by hitting return
+     * The player can be highlighted via arrow keys and selected by hitting return
      */
 
 function selectPlayer() {
