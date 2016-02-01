@@ -5,7 +5,6 @@
  */
 var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
-    enemyInit(this);
 };
 
 /* Update the x,y coordinates of an enemy and check for
@@ -19,7 +18,7 @@ Enemy.prototype.update = function(dt) {
     if (this.x < enemyXMax) {
         this.x = this.x + (this.speed * dt);
     } else {
-        enemyInit(this);
+        this.init();
     }
 };
 
@@ -27,6 +26,12 @@ Enemy.prototype.update = function(dt) {
  */
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Enemy.prototype.init = function() {
+    this.x = enemyXOrigin;
+    this.y = enemyYCoords[random_number(0, 2)];
+    this.speed = random_number(enemyMinSpeed, enemyMaxSpeed);
 };
 
 /*
