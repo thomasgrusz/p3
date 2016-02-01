@@ -85,6 +85,7 @@ Player.prototype.handleInput = function(direction) {
     }
     if (direction === 'return') {
         selectPlayerFlag = true;
+        player.sprite = playerImages[selectorBoxX];
     }
 
     /* Check for keyboard input during game and move character
@@ -204,6 +205,13 @@ var charWidth = 67;
 var score = 0;
 var selectorBoxX = 0;
 var selectorBox = [40, 130, 215, 310, 400];
+var playerImages = [
+    'images/char-boy.png',
+    'images/char-cat-girl.png',
+    'images/char-horn-girl.png',
+    'images/char-pink-girl.png',
+    'images/char-princess-girl.png'
+];
 
 /*
  *   Instantiate entities by

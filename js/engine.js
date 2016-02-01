@@ -226,13 +226,6 @@ function selectPlayer() {
 
     /* Draw player characters
      */
-    var playerImages = [
-        'images/char-boy.png',
-        'images/char-cat-girl.png',
-        'images/char-horn-girl.png',
-        'images/char-pink-girl.png',
-        'images/char-princess-girl.png'
-    ];
     for (var i = 0; i < playerImages.length; i++) {
         ctx.drawImage(Resources.get(playerImages[i]), 20+i*90, 180);
     }
