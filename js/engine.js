@@ -73,9 +73,6 @@ var Engine = (function(global) {
      */
     function init() {
         reset();
-        allEnemies.forEach(function(enemy) {
-            enemy.init;
-        });
         lastTime = Date.now();
         main();
     }

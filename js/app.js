@@ -5,33 +5,34 @@
  */
 var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
+    this.init();
 };
 
-/* Update the x,y coordinates of an enemy and check for
- * collision with player
+/* Initialize or reset an enemy object by placing it left off screen
+ * and assigning a random y-axis and speed
+ */
+Enemy.prototype.init = function() {
+    this.x = -100;
+    this.y = ENEMY_Y_COORDS[random_number(0, 2)];
+    this.speed = random_number(100, 400);
+};
+
+/* Update the x,y coordinates of an enemy.
+ * Check whether enemy leaves the window on the right
+ * and if yes, reset enemy by calling the init() function.
  */
 Enemy.prototype.update = function(dt) {
-
-    /* Check if enemy leaves the window and if yes, start again at
-     * random y-axis and random speed
-     */
-    if (this.x < enemyXMax) {
+    if (this.x < 505) {
         this.x = this.x + (this.speed * dt);
     } else {
         this.init();
     }
 };
 
-/* Render one enemy
+/* Render an enemy object
  */
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-Enemy.prototype.init = function() {
-    this.x = enemyXOrigin;
-    this.y = enemyYCoords[random_number(0, 2)];
-    this.speed = random_number(enemyMinSpeed, enemyMaxSpeed);
 };
 
 /*
@@ -39,12 +40,22 @@ Enemy.prototype.init = function() {
  *   Define Player class and corresponding prototype methods
  *
  */
-var Player = function() {
-    this.x = playerXOrigin;
-    this.y = playerYOrigin;
-    this.lives = livesStart;
+var Player = function(x, y) {
+    this.x = x;
+    this.y = y;
+    this.lives = 3;
     this.alive = true;
+    this.score = 0;
     this.sprite = 'images/char-boy.png';
+};
+
+Player.prototype.reset = function() {
+    this.x = 201;
+    this.y = 404;
+    this.lives = 3;
+    this.alive = true;
+    this.score = 0;
+
 };
 
 /* Update player by checking number of lives,
@@ -132,7 +143,7 @@ Player.prototype.handleInput = function(keyInput) {
  */
 function collisionEnemyDetect(enemy) {
     for (var j = 0; j<= 2; j++) {
-        if (enemy.y === enemyYCoords[j] && player.y === playerYCollisionCcoords[j]) {
+        if (enemy.y === ENEMY_Y_COORDS[j] && player.y === playerYCollisionCcoords[j]) {
             if (enemy.x > player.x) {
                 if (enemy.x < (player.x + enemyWidth)) {
                     collisionFlagEnemy = true;
@@ -190,6 +201,7 @@ function displayPanel(x,y,width,height,outlineColor,fillColor) {
     ctx.lineTo(x-10, y+10);
     ctx.quadraticCurveTo(x-10, y, x, y);
     ctx.fill();
+    
     ctx.beginPath();
     ctx.moveTo(x, y);
     ctx.lineTo(x+width,y);
@@ -203,10 +215,10 @@ function displayPanel(x,y,width,height,outlineColor,fillColor) {
     ctx.stroke();
 }
 
-    /* This function is called by the selectPlayer() function and
-     * draws a lightgreen selector outline around characters, that
-     * can be moved laterally with the arrow key.
-     */
+/* This function is called by the selectPlayer() function and
+ * draws a lightgreen selector outline around characters, that
+ * can be moved laterally with the arrow key.
+ */
 function drawSelectorBox(x,y,width,height,outlineColor) {
     ctx.lineWidth = 5;
     ctx.strokeStyle = outlineColor;
@@ -234,14 +246,9 @@ var waterReachedFlag = false;
 var selectPlayerFlag = false;
 var anotherGameFlag = false;
 
-var enemyNumber = 3;
-var enemyXOrigin = -100;
-var enemyXMax = 505;
-var enemyMinSpeed = 100;
-var enemyMaxSpeed = 400;
-var enemyWidth = 98;
+var ENEMY_Y_COORDS = [60, 143, 226];
 var allEnemies = [];
-var enemyYCoords = [60, 143, 226];
+var enemyWidth = 98;
 
 var playerXOrigin = 201;
 var playerYOrigin = 404;
@@ -272,10 +279,10 @@ var selectorBox = [40, 130, 215, 310, 400];
  *   - placing all enemies into an array called 'allEnemies' and
  *   - placeing player object into a variable called 'player'
  */
-for (var i = 1; i <= enemyNumber; i++) {
+for (var i = 1; i <= 3; i++) {
     allEnemies.push(new Enemy());
 }
-var player = new Player;
+var player = new Player(201, 404);
 
 /*
  *
