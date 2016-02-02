@@ -200,111 +200,32 @@ var Engine = (function(global) {
      * The player can be highlighted via arrow keys and selected by hitting return
      */
 
-function selectPlayer() {
-    renderBackground();
-
-    /* Draw white background panel with green outline
-     */
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = 'green'
-    ctx.fillStyle = 'white';
-
-    ctx.beginPath();
-    ctx.moveTo(30, 200);
-    ctx.lineTo(475,200);
-    ctx.quadraticCurveTo(485, 200, 485, 210);
-    ctx.lineTo(485, 410);
-    ctx.quadraticCurveTo(485, 420, 475, 420);
-    ctx.lineTo(30, 420);
-    ctx.quadraticCurveTo(20, 420, 20, 410);
-    ctx.lineTo(20, 210);
-    ctx.quadraticCurveTo(20, 200, 30, 200);
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.moveTo(30, 200);
-    ctx.lineTo(475,200);
-    ctx.quadraticCurveTo(485, 200, 485, 210);
-    ctx.lineTo(485, 410);
-    ctx.quadraticCurveTo(485, 420, 475, 420);
-    ctx.lineTo(30, 420);
-    ctx.quadraticCurveTo(20, 420, 20, 410);
-    ctx.lineTo(20, 210);
-    ctx.quadraticCurveTo(20, 200, 30, 200);
-    ctx.stroke();
-
-
-    /* Draw player characters
-     */
-    for (var i = 0; i < playerImages.length; i++) {
-        ctx.drawImage(Resources.get(playerImages[i]), 20+i*90, 180);
-    }
-
-    ctx.font = '20pt Lobster';
-    ctx.fillStyle = 'green';
-    ctx.fillText('select your hero and press ENTER!', 75, 400);
-
-    drawSelectorBox(selectorBox[selectorBoxX]);
-}
-
-    /* This function is called by the selectPlayer() function and
-     * draws a lightgreen selector outline around characters, that
-     * can be moved laterally with the arrow key.
-     */
-    function drawSelectorBox(x) {
-        ctx.strokeStyle = 'lightgreen';
-        ctx.beginPath();
-        ctx.moveTo(x, 220);
-        ctx.lineTo(x+63,220);
-        ctx.quadraticCurveTo(x+73, 220, x+73, 230);
-        ctx.lineTo(x+73, 340);
-        ctx.quadraticCurveTo(x+73, 350, x+63, 350);
-        ctx.lineTo(x, 350);
-        ctx.quadraticCurveTo(x-10, 350, x-10, 340);
-        ctx.lineTo(x-10, 230);
-        ctx.quadraticCurveTo(x-10, 220, x, 220);
-        ctx.stroke();
+    function selectPlayer() {
+        renderBackground();
+        /* Draw white background panel with green outline
+         */
+         displayPanel(30, 200, 445, 210, 'green', 'white');
+        /* Draw player characters
+         */
+        for (var i = 0; i < playerImages.length; i++) {
+            ctx.drawImage(Resources.get(playerImages[i]), 20+i*90, 180);
+        }
+        ctx.font = '20pt Lobster';
+        ctx.fillStyle = 'green';
+        ctx.fillText('select your hero and press ENTER!', 75, 400);
+        drawSelectorBox(selectorBox[selectorBoxX], 220, 63, 110, 'lightgreen');
     }
 
     function gameOver() {
         renderBackground();
         renderScore();
-
-        ctx.lineWidth = 5;
-        ctx.strokeStyle = 'green'
-        ctx.fillStyle = 'white';
-
-        ctx.beginPath();
-        ctx.moveTo(30, 200);
-        ctx.lineTo(475,200);
-        ctx.quadraticCurveTo(485, 200, 485, 210);
-        ctx.lineTo(485, 410);
-        ctx.quadraticCurveTo(485, 420, 475, 420);
-        ctx.lineTo(30, 420);
-        ctx.quadraticCurveTo(20, 420, 20, 410);
-        ctx.lineTo(20, 210);
-        ctx.quadraticCurveTo(20, 200, 30, 200);
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.moveTo(30, 200);
-        ctx.lineTo(475,200);
-        ctx.quadraticCurveTo(485, 200, 485, 210);
-        ctx.lineTo(485, 410);
-        ctx.quadraticCurveTo(485, 420, 475, 420);
-        ctx.lineTo(30, 420);
-        ctx.quadraticCurveTo(20, 420, 20, 410);
-        ctx.lineTo(20, 210);
-        ctx.quadraticCurveTo(20, 200, 30, 200);
-        ctx.stroke();
-
+        displayPanel(30, 200, 445, 210, 'green', 'white');
         ctx.font = '30pt Lobster';
         ctx.fillStyle = 'green';
         ctx.fillText('GAME OVER!', 140, 300);
         ctx.font = '20pt Lobster';
         ctx.fillStyle = 'lightgreen';
         ctx.fillText('press return for another game!', 90, 350);
-
         if (anotherGameFlag === true) {
             anotherGameFlag = false;
             init();

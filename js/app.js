@@ -166,23 +166,61 @@ function updateScore() {
 /* Render score
  */
 function renderScore() {
-    ctx.fillStyle = 'lightgreen'
-    ctx.beginPath();
-    ctx.moveTo(290, 545);
-    ctx.lineTo(480,545);
-    ctx.quadraticCurveTo(490, 545, 490, 555);
-    ctx.lineTo(490, 575);
-    ctx.quadraticCurveTo(490, 585, 480, 585);
-    ctx.lineTo(290, 585);
-    ctx.quadraticCurveTo(280, 585, 280, 575);
-    ctx.lineTo(280, 555);
-    ctx.quadraticCurveTo(280, 545, 290, 545);
-    ctx.fill();
+    displayPanel(290, 545, 190, 20, 'lightgreen', 'lightgreen');
     ctx.font = '32pt Lobster';
     ctx.fillStyle = 'green';
     ctx.fillText('Score: ', 290, 580);
     ctx.fillText(score, 400, 580);
-    ctx.lineWidth = 3;
+}
+
+/* Display panels with rounded corners
+ */
+function displayPanel(x,y,width,height,outlineColor,fillColor) {
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = outlineColor;
+    ctx.fillStyle = fillColor;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x+width,y);
+    ctx.quadraticCurveTo(x+width+10, y, x+width+10, y+10);
+    ctx.lineTo(x+width+10, y+height+10);
+    ctx.quadraticCurveTo(x+width+10, y+height+20, x+width, y+height+20);
+    ctx.lineTo(x, y+height+20);
+    ctx.quadraticCurveTo(x-10, y+height+20, x-10, y+height+10);
+    ctx.lineTo(x-10, y+10);
+    ctx.quadraticCurveTo(x-10, y, x, y);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x+width,y);
+    ctx.quadraticCurveTo(x+width+10, y, x+width+10, y+10);
+    ctx.lineTo(x+width+10, y+height+10);
+    ctx.quadraticCurveTo(x+width+10, y+height+20, x+width, y+height+20);
+    ctx.lineTo(x, y+height+20);
+    ctx.quadraticCurveTo(x-10, y+height+20, x-10, y+height+10);
+    ctx.lineTo(x-10, y+10);
+    ctx.quadraticCurveTo(x-10, y, x, y);
+    ctx.stroke();
+}
+
+    /* This function is called by the selectPlayer() function and
+     * draws a lightgreen selector outline around characters, that
+     * can be moved laterally with the arrow key.
+     */
+function drawSelectorBox(x,y,width,height,outlineColor) {
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = outlineColor;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x+width,y);
+    ctx.quadraticCurveTo(x+width+10, y, x+width+10, y+10);
+    ctx.lineTo(x+width+10, y+height+10);
+    ctx.quadraticCurveTo(x+width+10, y+height+20, x+width, y+height+20);
+    ctx.lineTo(x, y+height+20);
+    ctx.quadraticCurveTo(x-10, y+height+20, x-10, y+height+10);
+    ctx.lineTo(x-10, y+10);
+    ctx.quadraticCurveTo(x-10, y, x, y);
+    ctx.stroke();
 }
 
 /*
