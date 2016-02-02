@@ -46,11 +46,13 @@ var Engine = (function(global) {
          * functions, pass along the time delta to our update function since
          * it may be used for smooth animation.
          */
-        if (pauseFlag === false && selectPlayerFlag === true) {
+        if (pauseFlag === false && selectPlayerFlag === true && player.alive === true) {
             update(dt);
             render();
         } else if (selectPlayerFlag === false) {
             selectPlayer();
+        } else if (player.alive === false) {
+            gameOver();
         }
 
         /* Set our lastTime variable which is used to determine the time delta
@@ -182,7 +184,13 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+        player.alive = true;
+        collisionFlagEnemy = false;
+        pauseFlag = false;
+        waterReachedFlag = false;
+        player.x = playerXOrigin;
+        player.y = playerYOrigin;
+        player.lives = livesStart;
     }
 
     /* This function is called by the main() function and first draws a white
@@ -256,6 +264,51 @@ function selectPlayer() {
         ctx.stroke();
     }
 
+    function gameOver() {
+        renderBackground();
+        renderScore();
+
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = 'green'
+        ctx.fillStyle = 'white';
+
+        ctx.beginPath();
+        ctx.moveTo(30, 200);
+        ctx.lineTo(475,200);
+        ctx.quadraticCurveTo(485, 200, 485, 210);
+        ctx.lineTo(485, 410);
+        ctx.quadraticCurveTo(485, 420, 475, 420);
+        ctx.lineTo(30, 420);
+        ctx.quadraticCurveTo(20, 420, 20, 410);
+        ctx.lineTo(20, 210);
+        ctx.quadraticCurveTo(20, 200, 30, 200);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(30, 200);
+        ctx.lineTo(475,200);
+        ctx.quadraticCurveTo(485, 200, 485, 210);
+        ctx.lineTo(485, 410);
+        ctx.quadraticCurveTo(485, 420, 475, 420);
+        ctx.lineTo(30, 420);
+        ctx.quadraticCurveTo(20, 420, 20, 410);
+        ctx.lineTo(20, 210);
+        ctx.quadraticCurveTo(20, 200, 30, 200);
+        ctx.stroke();
+
+        ctx.font = '30pt Lobster';
+        ctx.fillStyle = 'green';
+        ctx.fillText('GAME OVER!', 140, 300);
+        ctx.font = '20pt Lobster';
+        ctx.fillStyle = 'lightgreen';
+        ctx.fillText('press return for another game!', 90, 350);
+
+        if (anotherGameFlag === true) {
+            anotherGameFlag = false;
+            init();
+        }
+    }
+
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
      * all of these images are properly loaded our game will start.
@@ -269,7 +322,8 @@ function selectPlayer() {
         'images/char-cat-girl.png',
         'images/char-horn-girl.png',
         'images/char-pink-girl.png',
-        'images/char-princess-girl.png'
+        'images/char-princess-girl.png',
+        'images/Heart.png'
     ]);
     Resources.onReady(init);
 
