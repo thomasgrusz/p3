@@ -42,16 +42,24 @@ Enemy.prototype.init = function() {
 var Player = function() {
     this.x = playerXOrigin;
     this.y = playerYOrigin;
+    this.lives = livesStart;
+    this.alive = true;
     this.sprite = 'images/char-boy.png';
 };
 
-/* Update player
+/* Update player by checking number of lives,
+ * adjusting lives, checking if player reached
+ * water and resetting player coordinates.
  */
 Player.prototype.update = function() {
     if (collisionFlagEnemy === true) {
-        player.x = playerXOrigin;
-        player.y = playerYOrigin;
+        this.x = playerXOrigin;
+        this.y = playerYOrigin;
+        this.lives--
         collisionFlagEnemy = false;
+    }
+    if (this.lives === 0) {
+        this.alive = false;
     }
     if (this.y < waterBorder) {
         this.x = playerXOrigin;
@@ -64,44 +72,52 @@ Player.prototype.update = function() {
  */
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    for (var i = 1; i <= this.lives; i++) {
+        ctx.drawImage(Resources.get('images/Heart.png'), -30+i*40, 525);
+    }
 };
 
 /* Handle player input from keyboard
  */
-Player.prototype.handleInput = function(direction) {
+Player.prototype.handleInput = function(keyInput) {
     /* Checks if left or right keys have been pressed at
      * the startscreen and moves the lightgreen selectorbox
-     * from character to character
+     * from character to character. Also check for spacebar
+      *to pause game.
      */
-    if (direction === 'left' && selectorBoxX > 0) {
+    if (keyInput === 'left' && selectorBoxX > 0) {
         selectorBoxX = selectorBoxX - 1;
-    } else if (direction === 'left' && selectorBoxX === 0) {
+    } else if (keyInput === 'left' && selectorBoxX === 0) {
         selectorBoxX = 4;
     }
-    if (direction === 'right' && selectorBoxX < 4) {
+    if (keyInput === 'right' && selectorBoxX < 4) {
         selectorBoxX = selectorBoxX + 1;
-    } else if (direction === 'right' && selectorBoxX === 4) {
+    } else if (keyInput === 'right' && selectorBoxX === 4) {
         selectorBoxX = 0;
     }
-    if (direction === 'return') {
+    if (keyInput === 'return' && selectPlayerFlag === false) {
         selectPlayerFlag = true;
         player.sprite = playerImages[selectorBoxX];
     }
+    if (keyInput === 'return' && player.alive === false) {
+        anotherGameFlag = true;
+    }
+    if (keyInput === 'space' && selectPlayerFlag === true) {
+        pauseFlag = !pauseFlag;
+    }
 
     /* Check for keyboard input during game and move character
-     * accordingly. Also check for spacebar to pause game.
+     * accordingly.
      */
-    if (selectPlayerFlag === true) {
-        if (direction === 'left' && this.x > playerLeftBorder) {
+    if (selectPlayerFlag === true && pauseFlag === false) {
+        if (keyInput === 'left' && this.x > playerLeftBorder) {
             this.x = this.x - playerXStep;
-        } else if (direction === 'right' && this.x < playerRightBorder) {
+        } else if (keyInput === 'right' && this.x < playerRightBorder) {
             this.x = this.x + playerXStep;
-        } else if (direction === 'down' && this.y < playerLowerBorder) {
+        } else if (keyInput === 'down' && this.y < playerLowerBorder) {
             this.y = this.y + playerYStep;
-        } else if (direction === 'up' && this.y > playerUpperBorder) {
+        } else if (keyInput === 'up' && this.y > playerUpperBorder) {
             this.y = this.y - playerYStep;
-        } else if (direction === 'space') {
-            pauseFlag = !pauseFlag;
         }
     }
 };
@@ -178,14 +194,15 @@ var collisionFlagEnemy = false;
 var pauseFlag = false;
 var waterReachedFlag = false;
 var selectPlayerFlag = false;
+var anotherGameFlag = false;
 
 var enemyNumber = 3;
 var enemyXOrigin = -100;
 var enemyXMax = 505;
 var enemyMinSpeed = 100;
 var enemyMaxSpeed = 400;
+var enemyWidth = 98;
 var allEnemies = [];
-
 var enemyYCoords = [60, 143, 226];
 
 var playerXOrigin = 201;
@@ -196,15 +213,9 @@ var playerLeftBorder = 1;
 var playerRightBorder = 401;
 var playerUpperBorder = -11;
 var playerLowerBorder = 404;
-
-var playerYCollisionCcoords = [72, 155, 238];
-
-var waterBorder = 72;
-var enemyWidth = 98;
 var charWidth = 67;
-var score = 0;
-var selectorBoxX = 0;
-var selectorBox = [40, 130, 215, 310, 400];
+var livesStart = 3;
+var playerYCollisionCcoords = [72, 155, 238];
 var playerImages = [
     'images/char-boy.png',
     'images/char-cat-girl.png',
@@ -212,6 +223,11 @@ var playerImages = [
     'images/char-pink-girl.png',
     'images/char-princess-girl.png'
 ];
+
+var waterBorder = 72;
+var score = 0;
+var selectorBoxX = 0;
+var selectorBox = [40, 130, 215, 310, 400];
 
 /*
  *   Instantiate entities by
