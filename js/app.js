@@ -105,6 +105,25 @@ Player.prototype.render = function() {
     }
 };
 
+/* Detect collision between enemy and player
+ */
+Player.prototype.collisionDetect = function(collisionObject) {
+    for (var j = 0; j<= 2; j++) {
+        if (collisionObject.y === collisionObject.yCoords[j] && player.y === player.yCollisionCoords[j]) {
+            if (collisionObject.x > player.x) {
+                if (collisionObject.x < (player.x + collisionObject.width)) {
+                    collisionFlagEnemy = true;
+                }
+            }
+            if (player.x > collisionObject.x) {
+                if (player.x < (collisionObject.x + player.charWidth)) {
+                    collisionFlagEnemy = true;
+                }
+            }
+        }
+    }
+}
+
 /* Update score
  */
 Player.prototype.updateScore = function() {
@@ -123,7 +142,6 @@ Player.prototype.renderScore = function() {
     ctx.fillText('Score: ', 290, 580);
     ctx.fillText(player.score, 400, 580);
 };
-
 
 /* Handle player input from keyboard
  */
@@ -183,25 +201,6 @@ Player.prototype.handleInput = function(keyInput) {
  *   Helper Methods
  *
  */
-
-/* Detect collision between enemy and player
- */
-function collisionDetect(collisionObject) {
-    for (var j = 0; j<= 2; j++) {
-        if (collisionObject.y === collisionObject.yCoords[j] && player.y === player.yCollisionCoords[j]) {
-            if (collisionObject.x > player.x) {
-                if (collisionObject.x < (player.x + collisionObject.width)) {
-                    collisionFlagEnemy = true;
-                }
-            }
-            if (player.x > collisionObject.x) {
-                if (player.x < (collisionObject.x + player.charWidth)) {
-                    collisionFlagEnemy = true;
-                }
-            }
-        }
-    }
-}
 
 /* Create random numbers between 'lower' and 'upper'
  */

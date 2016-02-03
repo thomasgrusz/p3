@@ -116,7 +116,7 @@ var Engine = (function(global) {
         /* Check collisions between player and all enemies
          */
         allEnemies.forEach(function(enemy) {
-            collisionDetect(enemy);
+            player.collisionDetect(enemy);
         });
     }
 
