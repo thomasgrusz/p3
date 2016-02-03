@@ -198,6 +198,30 @@ Player.prototype.handleInput = function(keyInput) {
 
 /*
  *
+ *   Define Collectibles class and corresponding prototype methods
+ *
+ */
+var Collectibles = function() {
+    this.yCoords = [72, 155, 238];
+    this.collectibles = [
+        'images/Gem Blue.png',
+        'images/Gem Green.png',
+        'images/Gem Orange.png'
+    ];
+}
+
+Collectibles.prototype.reset = function() {
+    this.x = 100;
+    this.y = yCoords[random_number(0, 2)];
+    this.randomCollectible = this.collectibles[random_number(0, 2)];
+};
+
+Collectibles.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.randomCollectible), thsi.x, this.y);
+};
+
+/*
+ *
  *   Helper Methods
  *
  */
@@ -246,7 +270,7 @@ function displayPanelOutline(x,y,width,height,outlineColor) {
 
 /*
  *
- *   Define all global controll variables
+ *   Define global variables
  *
  */
 var pauseFlag;
@@ -262,6 +286,7 @@ for (var i = 1; i <= 3; i++) {
     allEnemies.push(new Enemy());
 }
 var player = new Player();
+var gem = new Collectibles();
 
 /*
  *

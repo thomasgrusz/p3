@@ -189,7 +189,6 @@ var Engine = (function(global) {
             enemy.reset();
         });
         player.reset();
-
         collisionFlagEnemy = false;
         pauseFlag = false;
     }
