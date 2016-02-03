@@ -46,12 +46,16 @@ var Engine = (function(global) {
          * functions, pass along the time delta to our update function since
          * it may be used for smooth animation.
          */
-        if (pauseFlag === false && selectPlayerFlag === true && player.alive === true) {
+        if (player.characterSelectedFlag === false) {
+            selectPlayer();
+        }
+
+        if (pauseFlag === false && player.characterSelectedFlag === true && player.alive === true) {
             update(dt);
             render();
-        } else if (selectPlayerFlag === false) {
-            selectPlayer();
-        } else if (player.alive === false) {
+        }
+
+        if (player.alive === false) {
             gameOver();
         }
 
@@ -89,7 +93,7 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         checkCollisions();
-        updateScore();
+        player.updateScore();
     }
 
     /* This is called by the update function and loops through all of the
@@ -108,7 +112,7 @@ var Engine = (function(global) {
     }
 
     function checkCollisions() {
-        
+
         /* Check collisions between player and all enemies
          */
         allEnemies.forEach(function(enemy) {
@@ -173,7 +177,7 @@ var Engine = (function(global) {
             enemy.render();
         });
         player.render();
-        renderScore();
+        player.renderScore();
     }
 
     /* This function does nothing but it could have been a good place to.lineTo(, 555);
@@ -181,15 +185,13 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        player.alive = true;
+        allEnemies.forEach(function(enemy){
+            enemy.reset();
+        });
+        player.reset();
+
         collisionFlagEnemy = false;
         pauseFlag = false;
-        waterReachedFlag = false;
-        player.x = playerXOrigin;
-        player.y = playerYOrigin;
-        player.lives = livesStart;
-        score = 0;
-        selectorBoxX = 0;
     }
 
     /* This function is called by the main() function and first draws a white
@@ -201,30 +203,34 @@ var Engine = (function(global) {
         renderBackground();
         /* Draw white background panel with green outline
          */
-         displayPanel(30, 200, 445, 210, 'green', 'white');
+         displayPanel(30, 200, 445, 210, 'white');
+         displayPanelOutline(30, 200, 445, 210, 'green');
         /* Draw player characters
          */
-        for (var i = 0; i < playerImages.length; i++) {
-            ctx.drawImage(Resources.get(playerImages[i]), 20+i*90, 180);
+        for (var i = 0; i < player.characters.length; i++) {
+            ctx.drawImage(Resources.get(player.characters[i]), 20+i*90, 180);
         }
+        /* Display character selection message and draw lightgreen selector box
+         */
         ctx.font = '20pt Lobster';
         ctx.fillStyle = 'green';
         ctx.fillText('select your hero and press ENTER!', 75, 400);
-        drawSelectorBox(selectorBox[selectorBoxX], 220, 63, 110, 'lightgreen');
+        displayPanelOutline(player.selectorBoxXCoords[player.selectorBox], 220, 63, 110, 'lightgreen');
     }
 
     function gameOver() {
         renderBackground();
-        renderScore();
-        displayPanel(30, 200, 445, 210, 'green', 'white');
+        player.renderScore();
+        displayPanel(30, 200, 445, 210, 'white');
+        displayPanelOutline(30, 200, 445, 210, 'green');
         ctx.font = '30pt Lobster';
         ctx.fillStyle = 'green';
         ctx.fillText('GAME OVER!', 140, 300);
         ctx.font = '20pt Lobster';
-        ctx.fillStyle = 'lightgreen';
+        ctx.fillStyle = 'green';
         ctx.fillText('press return for another game!', 90, 350);
-        if (anotherGameFlag === true) {
-            anotherGameFlag = false;
+        if (player.anotherGameFlag === true) {
+            player.anotherGameFlag = false;
             init();
         }
     }
