@@ -186,16 +186,16 @@ Player.prototype.handleInput = function(keyInput) {
 
 /* Detect collision between enemy and player
  */
-function collisionEnemyDetect(enemy) {
+function collisionDetect(collisionObject) {
     for (var j = 0; j<= 2; j++) {
-        if (enemy.y === enemy.yCoords[j] && player.y === player.yCollisionCoords[j]) {
-            if (enemy.x > player.x) {
-                if (enemy.x < (player.x + enemy.width)) {
+        if (collisionObject.y === collisionObject.yCoords[j] && player.y === player.yCollisionCoords[j]) {
+            if (collisionObject.x > player.x) {
+                if (collisionObject.x < (player.x + collisionObject.width)) {
                     collisionFlagEnemy = true;
                 }
             }
-            if (player.x > enemy.x) {
-                if (player.x < (enemy.x + player.charWidth)) {
+            if (player.x > collisionObject.x) {
+                if (player.x < (collisionObject.x + player.charWidth)) {
                     collisionFlagEnemy = true;
                 }
             }
@@ -210,7 +210,7 @@ function random_number(lower, upper) {
     return lower + Math.floor((Math.random() * upper));
 }
 
-/* Display panels with rounded corners
+/* Display panel with rounded corners
  */
 function displayPanel(x,y,width,height,fillColor) {
     ctx.fillStyle = fillColor;
