@@ -201,23 +201,32 @@ Player.prototype.handleInput = function(keyInput) {
  *   Define Collectibles class and corresponding prototype methods
  *
  */
-var Collectibles = function() {
-    this.yCoords = [72, 155, 238];
+var Collectible = function() {
+    this.xCoords = [27, 127, 227, 327, 427];
+    this.yCoords = [117, 200, 283, 366, 449];
+    this.width = 50;
+    this.height = 85;
     this.collectibles = [
         'images/Gem Blue.png',
         'images/Gem Green.png',
         'images/Gem Orange.png'
     ];
-}
+};
 
-Collectibles.prototype.reset = function() {
-    this.x = 100;
-    this.y = yCoords[random_number(0, 2)];
+Collectible.prototype.reset = function() {
+    var x, y;
+    do {
+        x = random_number(0, 4);
+        y = random_number(0, 4);
+        this.x = this.xCoords[x];
+        this.y = this.yCoords[y];
+    }
+    while (this.x === 227 && this.y === 449);
     this.randomCollectible = this.collectibles[random_number(0, 2)];
 };
 
-Collectibles.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.randomCollectible), thsi.x, this.y);
+Collectible.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.randomCollectible), this.x, this.y, this.width, this.height);
 };
 
 /*
@@ -286,14 +295,14 @@ for (var i = 1; i <= 3; i++) {
     allEnemies.push(new Enemy());
 }
 var player = new Player();
-var gem = new Collectibles();
+var collectible = new Collectible();
 
 /*
  *
  *  Listen for key strokes and send keys to Player.handleInput() method.
  *
  */
-document.addEventListener('keyup', function(e) {
+document.addEventListener('keydown', function(e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',

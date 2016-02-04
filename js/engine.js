@@ -173,6 +173,7 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
+        collectible.render();
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
@@ -189,6 +190,7 @@ var Engine = (function(global) {
             enemy.reset();
         });
         player.reset();
+        collectible.reset();
         collisionFlagEnemy = false;
         pauseFlag = false;
     }
@@ -248,7 +250,11 @@ var Engine = (function(global) {
         'images/char-horn-girl.png',
         'images/char-pink-girl.png',
         'images/char-princess-girl.png',
-        'images/Heart.png'
+        'images/Heart.png',
+        'images/Gem Blue.png',
+        'images/Gem Green.png',
+        'images/Gem Orange.png'
+
     ]);
     Resources.onReady(init);
 
