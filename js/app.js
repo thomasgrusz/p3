@@ -238,8 +238,12 @@ Collectible.prototype.render = function() {
 /* Create random numbers between 'lower' and 'upper'
  */
 function random_number(lower, upper) {
-    upper += 1;
-    return lower + Math.floor((Math.random() * upper));
+    if (lower === 0){
+        return Math.floor(Math.random() * (upper + 1));
+    }
+    else {
+        return lower + Math.floor(Math.random() * upper);
+    }
 }
 
 /* Display panel with rounded corners
