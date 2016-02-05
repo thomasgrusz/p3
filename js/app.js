@@ -5,7 +5,7 @@
  */
 var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
-    this.yCoords = [60, 143, 226];
+    this.yCoords = [-23, 60, 143, 226, 309, 392];
     this.width = 98;
 };
 
@@ -14,7 +14,7 @@ var Enemy = function() {
  */
 Enemy.prototype.reset = function() {
     this.x = -100;
-    this.y = this.yCoords[random_number(0, 2)];
+    this.y = this.yCoords[random_number(1, 3)];
     this.speed = random_number(100, 400);
 };
 
@@ -52,7 +52,7 @@ var Player = function() {
     this.lowerBorder = 404;
     this.waterBorder = 72;
     this.width = 67;
-    this.yCoords = [72, 155, 238];
+    this.yCoords = [-11, 72, 155, 238, 321, 404];
     this.characters = [
         'images/char-boy.png',
         'images/char-cat-girl.png',
