@@ -78,7 +78,6 @@ Player.prototype.reset = function() {
     this.lives = 3;
     this.alive = true;
     this.score = 0;
-    this.waterReachedFlag = false;
     this.selectorBox = 0;
     this.anotherGameFlag = false;
 };
@@ -94,7 +93,7 @@ Player.prototype.update = function() {
     if (this.y < player.waterBorder) {
         this.x = player.xOrigin;
         this.y = player.yOrigin;
-        player.waterReachedFlag = true;
+        player.score += 10;
     }
 };
 
@@ -123,15 +122,6 @@ Player.prototype.collisionDetect = function(collisionObject) {
                 }
             }
         }
-    }
-};
-
-/* Update score
- */
-Player.prototype.updateScore = function() {
-    if (player.waterReachedFlag === true) {
-        player.score = player.score + 10;
-        player.waterReachedFlag = false;
     }
 };
 
