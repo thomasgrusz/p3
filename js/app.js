@@ -215,16 +215,28 @@ var Collectible = function() {
     ];
 };
 
-Collectible.prototype.reset = function() {
-    do {
-        var x = random_number(0, 4);
-        var y = random_number(1, 5);
-        this.x = this.xCoords[x];
-        this.y = this.yCoords[y];
+Collectible.prototype.reset = function(i) {
+    if (i === 0) {
+        do {
+            var x = random_number(0, 4);
+            var y = random_number(1, 5);
+            this.x = this.xCoords[x];
+            this.y = this.yCoords[y];
+        }
+        while (this.x === 227 && this.y === 449);
+        this.randomCollectible = this.collectibles[random_number(0, 2)];
+        this.collisionFlag = false;
+    } else {
+        do {
+            x = random_number(0, 4);
+            y = random_number(1, 5);
+            this.x = this.xCoords[x];
+            this.y = this.yCoords[y];
+        }
+        while ((this.x === 227 && this.y === 449) || (this.x === allCollectibles[i-1].x && this.y === allCollectibles[i-1].y));
+        this.randomCollectible = this.collectibles[random_number(0, 2)];
+        this.collisionFlag = false;
     }
-    while (this.x === 227 && this.y === 449);
-    this.randomCollectible = this.collectibles[random_number(0, 2)];
-    this.collisionFlag = false;
 };
 
 Collectible.prototype.update = function() {

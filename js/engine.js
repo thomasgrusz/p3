@@ -196,9 +196,9 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy){
             enemy.reset();
         });
-        allCollectibles.forEach(function(collectible) {
-            collectible.reset();
-        });
+        for (var i = 0; i <= 1; i++) {
+            allCollectibles[i].reset(i);
+        }
         player.reset();
         pauseFlag = false;
     }
