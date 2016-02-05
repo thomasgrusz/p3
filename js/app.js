@@ -87,7 +87,7 @@ Player.prototype.reset = function() {
  * water and resetting player coordinates.
  */
 Player.prototype.update = function() {
-    if (this.lives === 0) {
+    if (this.lives <= 0) {
         this.alive = false;
     }
     if (this.y < player.waterBorder) {
