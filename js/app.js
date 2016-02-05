@@ -205,7 +205,7 @@ Player.prototype.handleInput = function(keyInput) {
  */
 var Collectible = function() {
     this.xCoords = [27, 127, 227, 327, 427];
-    this.yCoords = [117, 200, 283, 366, 449];
+    this.yCoords = [34, 117, 200, 283, 366, 449];
     this.width = 50;
     this.height = 85;
     this.collectibles = [
@@ -216,15 +216,21 @@ var Collectible = function() {
 };
 
 Collectible.prototype.reset = function() {
-    var x, y;
     do {
-        x = random_number(0, 4);
-        y = random_number(0, 4);
+        var x = random_number(0, 4);
+        var y = random_number(1, 5);
         this.x = this.xCoords[x];
         this.y = this.yCoords[y];
     }
     while (this.x === 227 && this.y === 449);
     this.randomCollectible = this.collectibles[random_number(0, 2)];
+    this.collisionFlag = false;
+};
+
+Collectible.prototype.update = function() {
+    if (this.collisionFlag === true) {
+        this.x = -100;
+    }
 };
 
 Collectible.prototype.render = function() {

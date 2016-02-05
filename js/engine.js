@@ -109,6 +109,7 @@ var Engine = (function(global) {
         });
 
         player.update();
+        collectible.update();
     }
 
     function checkCollisions() {
@@ -118,6 +119,7 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             player.collisionDetect(enemy);
         });
+        player.collisionDetect(collectible);
     }
 
     /* This function initially calls the background render function,
