@@ -205,21 +205,43 @@ var Collectible = function() {
     ];
 };
 
-Collectible.prototype.reset = function() {
-    do {
-        var x = random_number(0, 4);
-        var y = random_number(1, 5);
-        this.x = this.xCoords[x];
-        this.y = this.yCoords[y];
+Collectible.prototype.reset = function(i) {
+    if (i === 0) {
+        do {
+            var x = random_number(0, 4);
+            var y = random_number(1, 5);
+            this.x = this.xCoords[x];
+            this.y = this.yCoords[y];
+        }
+        while (this.x === 227 && this.y === 449);
+        this.randomCollectible = this.collectibles[random_number(0, 2)];
+        this.collisionFlag = false;
+    } else {
+        do {
+            x = random_number(0, 4);
+            y = random_number(1, 5);
+            this.x = this.xCoords[x];
+            this.y = this.yCoords[y];
+        }
+        while ((this.x === 227 && this.y === 449) || (this.x === allCollectibles[i-1].x && this.y === allCollectibles[i-1].y));
+        this.randomCollectible = this.collectibles[random_number(0, 2)];
+        this.collisionFlag = false;
     }
-    while (this.x === 227 && this.y === 449);
-    this.randomCollectible = this.collectibles[random_number(0, 2)];
-    this.collisionFlag = false;
 };
 
 Collectible.prototype.update = function() {
     if (this.collisionFlag === true) {
+        this.collisionFlag = false;
         this.x = -100;
+        if (this.randomCollectible === this.collectibles[0]) {
+            player.score += 80;
+        }
+        if (this.randomCollectible === this.collectibles[1]) {
+            player.score += 50;
+        }
+        if (this.randomCollectible === this.collectibles[2]) {
+            player.score += 30;
+        }
     }
 };
 
@@ -295,8 +317,11 @@ var allEnemies = [];
 for (var i = 1; i <= 3; i++) {
     allEnemies.push(new Enemy());
 }
+var allCollectibles = [];
+for (var c = 1; c <= 2; c++) {
+    allCollectibles.push(new Collectible);
+}
 var player = new Player();
-var collectible = new Collectible();
 
 /*
  *

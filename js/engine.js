@@ -106,9 +106,10 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-
+        allCollectibles.forEach(function(collectible) {
+            collectible.update();
+        });
         player.update();
-        collectible.update();
     }
 
     function checkCollisions() {
@@ -118,7 +119,9 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             player.collisionDetect(enemy);
         });
-        player.collisionDetect(collectible);
+        allCollectibles.forEach(function(collectible) {
+            player.collisionDetect(collectible);
+        });
     }
 
     /* This function initially calls the background render function,
@@ -174,7 +177,9 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
-        collectible.render();
+        allCollectibles.forEach(function(collectible) {
+            collectible.render();
+        });
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
@@ -190,8 +195,10 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy){
             enemy.reset();
         });
+        for (var i = 0; i <= 1; i++) {
+            allCollectibles[i].reset(i);
+        }
         player.reset();
-        collectible.reset();
         pauseFlag = false;
     }
 
