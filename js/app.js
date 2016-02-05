@@ -33,7 +33,8 @@ Enemy.prototype.update = function(dt) {
         player.x = player.xOrigin;
         player.y = player.yOrigin;
         player.lives--;
-        this.collisionFlag = false;
+        this.reset();
+
     }
 
 };
