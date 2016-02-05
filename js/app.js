@@ -44,8 +44,6 @@ Enemy.prototype.render = function() {
 var Player = function() {
     this.xCoords = [1, 101, 201, 301, 401];
     this.yCoords = [-11, 72, 155, 238, 321, 404];
-    this.xStep = 100;
-    this.yStep = 83;
     this.xOrigin = this.xCoords[2];
     this.yOrigin = this.yCoords[5];
     this.leftBorder = this.xCoords[0];
@@ -187,13 +185,13 @@ Player.prototype.handleInput = function(keyInput) {
      */
     if (player.characterSelectedFlag === true && pauseFlag === false) {
         if (keyInput === 'left' && this.x > player.leftBorder) {
-            this.x = this.x - player.xStep;
+            this.x = this.xCoords[this.xCoords.indexOf(this.x) - 1];
         } else if (keyInput === 'right' && this.x < player.rightBorder) {
-            this.x = this.x + player.xStep;
+            this.x = this.xCoords[this.xCoords.indexOf(this.x) + 1];
         } else if (keyInput === 'down' && this.y < player.lowerBorder) {
-            this.y = this.y + player.yStep;
+            this.y = this.yCoords[this.yCoords.indexOf(this.y) + 1];
         } else if (keyInput === 'up' && this.y > player.upperBorder) {
-            this.y = this.y - player.yStep;
+            this.y = this.yCoords[this.yCoords.indexOf(this.y) - 1];
         }
     }
 };
