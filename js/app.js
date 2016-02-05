@@ -52,6 +52,7 @@ var Player = function() {
     this.lowerBorder = 404;
     this.waterBorder = 72;
     this.width = 67;
+    this.xCoords = [1, 101, 201, 301, 401];
     this.yCoords = [-11, 72, 155, 238, 321, 404];
     this.characters = [
         'images/char-boy.png',
@@ -108,7 +109,7 @@ Player.prototype.render = function() {
 /* Detect collision between enemy and player
  */
 Player.prototype.collisionDetect = function(collisionObject) {
-    for (var j = 0; j<= 2; j++) {
+    for (var j = 0; j<= 5; j++) {
         if (collisionObject.y === collisionObject.yCoords[j] && player.y === player.yCoords[j]) {
             if (collisionObject.x > player.x) {
                 if (collisionObject.x < (player.x + collisionObject.width)) {
