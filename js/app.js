@@ -105,18 +105,18 @@ Player.prototype.render = function() {
     }
 };
 
-/* Detect collision between enemy and player
+/* Detect collision between collisionObject and player
  */
 Player.prototype.collisionDetect = function(collisionObject) {
     for (var j = 0; j<= 5; j++) {
-        if (collisionObject.y === collisionObject.yCoords[j] && player.y === player.yCoords[j]) {
-            if (collisionObject.x > player.x) {
-                if (collisionObject.x < (player.x + collisionObject.width)) {
+        if (collisionObject.y === collisionObject.yCoords[j] && player.y === this.yCoords[j]) {
+            if (collisionObject.x > this.x) {
+                if ((this.x + this.width) > collisionObject.x) {
                     collisionFlagEnemy = true;
                 }
             }
-            if (player.x > collisionObject.x) {
-                if (player.x < (collisionObject.x + player.width)) {
+            if (this.x > collisionObject.x) {
+                if ((collisionObject.x + collisionObject.width) > this.x) {
                     collisionFlagEnemy = true;
                 }
             }
