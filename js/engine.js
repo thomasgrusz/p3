@@ -180,6 +180,9 @@ var Engine = (function(global) {
         allCollectibles.forEach(function(collectible) {
             collectible.render();
         });
+        allRocks.forEach(function(rock) {
+            rock.render();
+        });
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
@@ -198,6 +201,9 @@ var Engine = (function(global) {
         for (var i = 0; i <= 1; i++) {
             allCollectibles[i].reset(i);
         }
+        allRocks.forEach(function(rock) {
+            rock.reset();
+        });
         player.reset();
         pauseFlag = false;
     }
@@ -260,8 +266,8 @@ var Engine = (function(global) {
         'images/Heart.png',
         'images/Gem Blue.png',
         'images/Gem Green.png',
-        'images/Gem Orange.png'
-
+        'images/Gem Orange.png',
+        'images/Rock.png'
     ]);
     Resources.onReady(init);
 

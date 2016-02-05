@@ -252,6 +252,32 @@ Collectible.prototype.render = function() {
 
 /*
  *
+ *   Define Rock class and corresponding prototype methods
+ *
+ */
+var Rock = function() {
+    this.width = 101;
+    this.xCoords = [1, 101, 201, 301, 401];
+    this.yCoords = [-23, 60, 143, 226, 309, 392];
+    this.sprite = 'images/Rock.png';
+};
+
+Rock.prototype.reset = function() {
+    do {
+        var x = random_number(0, 4);
+        var y = random_number(1, 5);
+        this.x = this.xCoords[x];
+        this.y = this.yCoords[y];
+    }
+    while (this.x === 227 && this.y === 449);
+};
+
+Rock.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+/*
+ *
  *   Helper Methods
  *
  */
@@ -321,6 +347,10 @@ for (var i = 1; i <= 3; i++) {
 var allCollectibles = [];
 for (var c = 1; c <= 2; c++) {
     allCollectibles.push(new Collectible);
+}
+var allRocks = [];
+for (var r = 1; r <= 3; r++) {
+    allRocks.push(new Rock);
 }
 var player = new Player();
 
