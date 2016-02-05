@@ -315,8 +315,11 @@ var allEnemies = [];
 for (var i = 1; i <= 3; i++) {
     allEnemies.push(new Enemy());
 }
+var allCollectibles = [];
+for (var c = 1; c <= 2; c++) {
+    allCollectibles.push(new Collectible);
+}
 var player = new Player();
-var collectible = new Collectible();
 
 /*
  *
