@@ -272,7 +272,7 @@ Rock.prototype.reset = function() {
         this.x = this.xCoords[x];
         this.y = this.yCoords[y];
     }
-    while (this.x === 201 && this.y === 143);
+    while (this.x === 201 && this.y === 392);
 };
 
 Rock.prototype.render = function() {
@@ -369,11 +369,11 @@ for (var i = 1; i <= 3; i++) {
     allEnemies.push(new Enemy());
 }
 var allCollectibles = [];
-for (var c = 1; c <= 2; c++) {
+for (i = 1; i <= 2; i++) {
     allCollectibles.push(new Collectible);
 }
 var allRocks = [];
-for (var r = 1; r <= 2; r++) {
+for (i = 1; i <= 2; i++) {
     allRocks.push(new Rock);
 }
 var player = new Player();
