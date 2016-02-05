@@ -191,7 +191,6 @@ var Engine = (function(global) {
         });
         player.reset();
         collectible.reset();
-        collisionFlagEnemy = false;
         pauseFlag = false;
     }
 

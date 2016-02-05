@@ -29,6 +29,13 @@ Enemy.prototype.update = function(dt) {
     } else {
         this.reset();
     }
+    if (this.collisionFlag === true) {
+        player.x = player.xOrigin;
+        player.y = player.yOrigin;
+        player.lives--;
+        this.collisionFlag = false;
+    }
+
 };
 
 /* Render an enemy object
@@ -81,12 +88,6 @@ Player.prototype.reset = function() {
  * water and resetting player coordinates.
  */
 Player.prototype.update = function() {
-    if (collisionFlagEnemy === true) {
-        this.x = player.xOrigin;
-        this.y = player.yOrigin;
-        this.lives--;
-        collisionFlagEnemy = false;
-    }
     if (this.lives === 0) {
         this.alive = false;
     }
@@ -113,12 +114,12 @@ Player.prototype.collisionDetect = function(collisionObject) {
         if (collisionObject.y === collisionObject.yCoords[j] && player.y === this.yCoords[j]) {
             if (collisionObject.x > this.x) {
                 if ((this.x + this.width -this.emptyPixelOffset) > collisionObject.x) {
-                    collisionFlagEnemy = true;
+                    collisionObject.collisionFlag = true;
                 }
             }
             if (this.x > collisionObject.x) {
                 if ((collisionObject.x + collisionObject.width) > (this.x + this.emptyPixelOffset)) {
-                    collisionFlagEnemy = true;
+                    collisionObject.collisionFlag = true;
                 }
             }
         }
@@ -288,7 +289,6 @@ function displayPanelOutline(x,y,width,height,outlineColor) {
  *
  */
 var pauseFlag;
-var collisionFlagEnemy;
 
 /*
  *   Instantiate entities by
