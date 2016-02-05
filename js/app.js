@@ -177,13 +177,16 @@ Player.prototype.handleInput = function(keyInput) {
      * accordingly.
      */
     if (player.characterSelectedFlag === true && pauseFlag === false) {
-        if (keyInput === 'left' && this.x > player.leftBorder) {
+
+        var isRockLRDU = isRock(this.xCoords.indexOf(this.x), this.yCoords.indexOf(this.y));
+
+        if (keyInput === 'left' && this.x > player.leftBorder && !isRockLRDU[0]) {
             this.x = this.xCoords[this.xCoords.indexOf(this.x) - 1];
-        } else if (keyInput === 'right' && this.x < player.rightBorder) {
+        } else if (keyInput === 'right' && this.x < player.rightBorder && !isRockLRDU[1]) {
             this.x = this.xCoords[this.xCoords.indexOf(this.x) + 1];
-        } else if (keyInput === 'down' && this.y < player.lowerBorder) {
+        } else if (keyInput === 'down' && this.y < player.lowerBorder && !isRockLRDU[2]) {
             this.y = this.yCoords[this.yCoords.indexOf(this.y) + 1];
-        } else if (keyInput === 'up' && this.y > player.upperBorder) {
+        } else if (keyInput === 'up' && this.y > player.upperBorder && !isRockLRDU[3]) {
             this.y = this.yCoords[this.yCoords.indexOf(this.y) - 1];
         }
     }
@@ -278,7 +281,7 @@ Rock.prototype.render = function() {
 
 /*
  *
- *   Helper Methods
+ *   Helper functions
  *
  */
 
@@ -328,6 +331,27 @@ function displayPanelOutline(x,y,width,height,outlineColor) {
     ctx.stroke();
 }
 
+/* Check if there is a  rock left, right, down or up of player
+ */
+function isRock(playerXIndex, playerYIndex) {
+    var isRockLRDU = [false, false, false, false];
+    allRocks.forEach(function(rock) {
+        if (playerXIndex - 1 === rock.xCoords.indexOf(rock.x) && playerYIndex === rock.yCoords.indexOf(rock.y)) {
+            isRockLRDU[0] = true;
+        }
+        if (playerXIndex + 1 === rock.xCoords.indexOf(rock.x) && playerYIndex === rock.yCoords.indexOf(rock.y)) {
+            isRockLRDU[1] = true;
+        }
+        if (playerXIndex === rock.xCoords.indexOf(rock.x) && playerYIndex + 1 === rock.yCoords.indexOf(rock.y)) {
+            isRockLRDU[2] = true;
+        }
+        if (playerXIndex === rock.xCoords.indexOf(rock.x) && playerYIndex - 1 === rock.yCoords.indexOf(rock.y)) {
+            isRockLRDU[3] = true;
+        }
+    });
+    return isRockLRDU;
+}
+
 /*
  *
  *   Define global variables
@@ -349,7 +373,7 @@ for (var c = 1; c <= 2; c++) {
     allCollectibles.push(new Collectible);
 }
 var allRocks = [];
-for (var r = 1; r <= 3; r++) {
+for (var r = 1; r <= 2; r++) {
     allRocks.push(new Rock);
 }
 var player = new Player();
