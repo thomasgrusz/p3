@@ -42,18 +42,19 @@ Enemy.prototype.render = function() {
  *
  */
 var Player = function() {
-    this.xStep = 100;
-    this.yStep = 83;
-    this.xOrigin = 201;
-    this.yOrigin = 404;
-    this.leftBorder = 1;
-    this.rightBorder = 401;
-    this.upperBorder = -11;
-    this.lowerBorder = 404;
-    this.waterBorder = 72;
-    this.width = 67;
     this.xCoords = [1, 101, 201, 301, 401];
     this.yCoords = [-11, 72, 155, 238, 321, 404];
+    this.xStep = 100;
+    this.yStep = 83;
+    this.xOrigin = this.xCoords[2];
+    this.yOrigin = this.yCoords[5];
+    this.leftBorder = this.xCoords[0];
+    this.rightBorder = this.xCoords[4];
+    this.upperBorder = this.yCoords[0];
+    this.lowerBorder = this.yCoords[5];
+    this.waterBorder = 72;
+    this.width = 101;
+    this.emptyPixelOffset = 17;
     this.characters = [
         'images/char-boy.png',
         'images/char-cat-girl.png',
