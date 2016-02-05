@@ -229,7 +229,17 @@ Collectible.prototype.reset = function() {
 
 Collectible.prototype.update = function() {
     if (this.collisionFlag === true) {
+        this.collisionFlag = false;
         this.x = -100;
+        if (this.randomCollectible === this.collectibles[0]) {
+            player.score += 80;
+        }
+        if (this.randomCollectible === this.collectibles[1]) {
+            player.score += 50;
+        }
+        if (this.randomCollectible === this.collectibles[2]) {
+            player.score += 30;
+        }
     }
 };
 
