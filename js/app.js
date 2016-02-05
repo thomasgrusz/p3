@@ -16,6 +16,7 @@ Enemy.prototype.reset = function() {
     this.x = -100;
     this.y = this.yCoords[random_number(1, 3)];
     this.speed = random_number(100, 400);
+    this.collisionFlag = false;
 };
 
 /* Update the x,y coordinates of an enemy.
