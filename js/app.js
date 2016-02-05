@@ -6,7 +6,7 @@
 var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
     this.yCoords = [-23, 60, 143, 226, 309, 392];
-    this.width = 98;
+    this.width = 101;
 };
 
 /* Reset an enemy object by placing it left off screen
@@ -111,12 +111,12 @@ Player.prototype.collisionDetect = function(collisionObject) {
     for (var j = 0; j<= 5; j++) {
         if (collisionObject.y === collisionObject.yCoords[j] && player.y === this.yCoords[j]) {
             if (collisionObject.x > this.x) {
-                if ((this.x + this.width) > collisionObject.x) {
+                if ((this.x + this.width -this.emptyPixelOffset) > collisionObject.x) {
                     collisionFlagEnemy = true;
                 }
             }
             if (this.x > collisionObject.x) {
-                if ((collisionObject.x + collisionObject.width) > this.x) {
+                if ((collisionObject.x + collisionObject.width) > (this.x + this.emptyPixelOffset)) {
                     collisionFlagEnemy = true;
                 }
             }
