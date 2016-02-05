@@ -272,7 +272,7 @@ Rock.prototype.reset = function() {
         this.x = this.xCoords[x];
         this.y = this.yCoords[y];
     }
-    while (this.x === 227 && this.y === 449);
+    while (this.x === 201 && this.y === 143);
 };
 
 Rock.prototype.render = function() {
