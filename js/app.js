@@ -122,7 +122,7 @@ Player.prototype.collisionDetect = function(collisionObject) {
             }
         }
     }
-}
+};
 
 /* Update score
  */
