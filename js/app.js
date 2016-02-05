@@ -51,8 +51,8 @@ var Player = function() {
     this.upperBorder = -11;
     this.lowerBorder = 404;
     this.waterBorder = 72;
-    this.charWidth = 67;
-    this.yCollisionCoords = [72, 155, 238];
+    this.width = 67;
+    this.yCoords = [72, 155, 238];
     this.characters = [
         'images/char-boy.png',
         'images/char-cat-girl.png',
@@ -109,14 +109,14 @@ Player.prototype.render = function() {
  */
 Player.prototype.collisionDetect = function(collisionObject) {
     for (var j = 0; j<= 2; j++) {
-        if (collisionObject.y === collisionObject.yCoords[j] && player.y === player.yCollisionCoords[j]) {
+        if (collisionObject.y === collisionObject.yCoords[j] && player.y === player.yCoords[j]) {
             if (collisionObject.x > player.x) {
                 if (collisionObject.x < (player.x + collisionObject.width)) {
                     collisionFlagEnemy = true;
                 }
             }
             if (player.x > collisionObject.x) {
-                if (player.x < (collisionObject.x + player.charWidth)) {
+                if (player.x < (collisionObject.x + player.width)) {
                     collisionFlagEnemy = true;
                 }
             }
