@@ -214,20 +214,9 @@ Collectible.prototype.reset = function() {
         this.x = this.xCoords[random_number(0, 4)];
         this.y = this.yCoords[random_number(1, 5)];
     }
-    while (this.x === 227 && this.y === 449 || this.gemOverlap(allCollectibles.indexOf(this)));
+    while (this.x === 227 && this.y === 449 || overlap(allCollectibles, allCollectibles.indexOf(this)));
     this.randomCollectible = this.collectibles[random_number(0, 2)];
     this.collisionFlag = false;
-};
-
-Collectible.prototype.gemOverlap = function(gemIndex) {
-    if (gemIndex > 0) {
-        for (var i = 0; i < gemIndex; i++) {
-            if (allCollectibles[gemIndex].x === allCollectibles[i].x && allCollectibles[gemIndex].y === allCollectibles[i].y) {
-                return true;
-            }
-        }
-    }
-    return false;
 };
 
 Collectible.prototype.update = function() {
@@ -334,7 +323,7 @@ function displayPanelOutline(x,y,width,height,outlineColor) {
     ctx.stroke();
 }
 
-/* Check if there is a  rock left, right, down or up of player
+/* Check if there is a rock left, right, down or up of player
  */
 function isRock(playerXIndex, playerYIndex) {
     var isRockLRDU = [false, false, false, false];
@@ -353,6 +342,19 @@ function isRock(playerXIndex, playerYIndex) {
         }
     });
     return isRockLRDU;
+}
+
+/* Check if there is a overlap between an array's object and the other array elements
+ */
+function overlap(array, objectIndex) {
+    if (objectIndex > 0) {
+        for (var i = 0; i < objectIndex; i++) {
+            if (array[objectIndex].x === array[i].x && array[objectIndex].y === array[i].y) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 /*
