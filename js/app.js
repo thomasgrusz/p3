@@ -252,19 +252,11 @@ var Rock = function() {
 };
 
 Rock.prototype.reset = function() {
-    if (allRocks.indexOf(this) === 0) {
-        do {
-            this.x = this.xCoords[random_number(0, 4)];
-            this.y = this.yCoords[random_number(1, 5)];
-        }
-        while (this.x === 201 && this.y === 392);
-    } else
-        do {
-            this.x = this.xCoords[random_number(0, 4)];
-            this.y = this.yCoords[random_number(1, 5)];
-        }
-        while ((this.x === 201 && this.y === 392) ||
-        (this.x === allRocks[allRocks.indexOf(this) - 1].x && this.y === allRocks[allRocks.indexOf(this) - 1].y));
+    do {
+        this.x = this.xCoords[random_number(0, 4)];
+        this.y = this.yCoords[random_number(1, 5)];
+    }
+    while (this.x === 201 && this.y === 392 || overlap(allRocks, allRocks.indexOf(this)));
 };
 
 Rock.prototype.render = function() {
