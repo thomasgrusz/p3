@@ -210,21 +210,24 @@ var Collectible = function() {
 };
 
 Collectible.prototype.reset = function() {
-    if (allCollectibles.indexOf(this) === 0) {
-        do {
-            this.x = this.xCoords[random_number(0, 4)];
-            this.y = this.yCoords[random_number(1, 5)];
-        }
-        while (this.x === 227 && this.y === 449);
-    } else
-        do {
-            this.x = this.xCoords[random_number(0, 4)];
-            this.y = this.yCoords[random_number(1, 5)];
-        }
-        while ((this.x === 227 && this.y === 449) ||
-        (this.x === allCollectibles[allCollectibles.indexOf(this) - 1].x && this.y === allCollectibles[allCollectibles.indexOf(this) - 1].y));
+    do {
+        this.x = this.xCoords[random_number(0, 4)];
+        this.y = this.yCoords[random_number(1, 5)];
+    }
+    while (this.x === 227 && this.y === 449 || this.gemOverlap(allCollectibles.indexOf(this)));
     this.randomCollectible = this.collectibles[random_number(0, 2)];
     this.collisionFlag = false;
+};
+
+Collectible.prototype.gemOverlap = function(gemIndex) {
+    if (gemIndex > 0) {
+        for (var i = 0; i < gemIndex; i++) {
+            if (allCollectibles[gemIndex].x === allCollectibles[i].x && allCollectibles[gemIndex].y === allCollectibles[i].y) {
+                return true;
+            }
+        }
+    }
+    return false;
 };
 
 Collectible.prototype.update = function() {
@@ -369,11 +372,11 @@ for (var i = 1; i <= 3; i++) {
     allEnemies.push(new Enemy());
 }
 var allCollectibles = [];
-for (i = 1; i <= 5; i++) {
+for (i = 1; i <= 8; i++) {
     allCollectibles.push(new Collectible);
 }
 var allRocks = [];
-for (i = 1; i <= 2; i++) {
+for (i = 1; i <= 8; i++) {
     allRocks.push(new Rock);
 }
 var player = new Player();
