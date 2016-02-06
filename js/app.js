@@ -34,9 +34,7 @@ Enemy.prototype.update = function(dt) {
         player.y = player.yOrigin;
         player.lives--;
         this.reset();
-
     }
-
 };
 
 /* Render an enemy object
@@ -256,7 +254,7 @@ Rock.prototype.reset = function() {
         this.x = this.xCoords[random_number(0, 4)];
         this.y = this.yCoords[random_number(1, 5)];
     }
-    while (this.x === 201 && this.y === 392 || overlap(allRocks, allRocks.indexOf(this)));
+    while (this.x === 201 && this.y === 392 || overlap(allRocks, allRocks.indexOf(this)) || isGem(allRocks.indexOf(this)));
 };
 
 Rock.prototype.render = function() {
@@ -336,7 +334,7 @@ function isRock(playerXIndex, playerYIndex) {
     return isRockLRDU;
 }
 
-/* Check if there is a overlap between an array's object and the other array elements
+/* Check if there is an overlap between an array's object and the other array elements
  */
 function overlap(array, objectIndex) {
     if (objectIndex > 0) {
@@ -347,6 +345,19 @@ function overlap(array, objectIndex) {
         }
     }
     return false;
+}
+
+/* Check if there is an overlap between gem and a rock that wants to be placed
+ */
+function isGem(objectIndex) {
+    var returnValue = false;
+    allCollectibles.forEach(function(collectible) {
+        if (allRocks[objectIndex].xCoords.indexOf(allRocks[objectIndex].x) === collectible.xCoords.indexOf(collectible.x) &&
+            allRocks[objectIndex].yCoords.indexOf(allRocks[objectIndex].y) === collectible.yCoords.indexOf(collectible.y)) {
+            returnValue = true;
+        }
+    });
+    return returnValue;
 }
 
 /*
@@ -366,11 +377,11 @@ for (var i = 1; i <= 3; i++) {
     allEnemies.push(new Enemy());
 }
 var allCollectibles = [];
-for (i = 1; i <= 8; i++) {
+for (i = 1; i <= 2; i++) {
     allCollectibles.push(new Collectible);
 }
 var allRocks = [];
-for (i = 1; i <= 8; i++) {
+for (i = 1; i <= 2; i++) {
     allRocks.push(new Rock);
 }
 var player = new Player();
