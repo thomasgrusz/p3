@@ -260,13 +260,19 @@ var Rock = function() {
 };
 
 Rock.prototype.reset = function() {
-    do {
-        var x = random_number(0, 4);
-        var y = random_number(1, 5);
-        this.x = this.xCoords[x];
-        this.y = this.yCoords[y];
-    }
-    while (this.x === 201 && this.y === 392);
+    if (allRocks.indexOf(this) === 0) {
+        do {
+            this.x = this.xCoords[random_number(0, 4)];
+            this.y = this.yCoords[random_number(1, 5)];
+        }
+        while (this.x === 201 && this.y === 392);
+    } else
+        do {
+            this.x = this.xCoords[random_number(0, 4)];
+            this.y = this.yCoords[random_number(1, 5)];
+        }
+        while ((this.x === 201 && this.y === 392) ||
+        (this.x === allRocks[allRocks.indexOf(this) - 1].x && this.y === allRocks[allRocks.indexOf(this) - 1].y));
 };
 
 Rock.prototype.render = function() {
