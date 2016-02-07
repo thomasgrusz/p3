@@ -286,6 +286,7 @@ var Timer = function() {
 
 Timer.prototype.reset = function() {
     this.time = 60;
+    clearInterval(timer.myTimer);
     this.myTimer = setInterval(timer.update, 1000);
 
 };
