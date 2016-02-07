@@ -280,7 +280,7 @@ var Timer = function() {
 
 Timer.prototype.reset = function() {
     this.time = 60;
-    setInterval(timer.update, 1000);
+    this.myTimer = setInterval(timer.update, 1000);
 
 };
 
@@ -293,6 +293,7 @@ Timer.prototype.update = function() {
     }
     if (player.score >= 200) {
         player.gameWon = true;
+        clearInterval(timer.myTimer);
     }
 };
 
