@@ -188,6 +188,7 @@ var Engine = (function(global) {
         });
         player.render();
         player.renderScore();
+        timer.render();
     }
 
     /* This function does nothing but it could have been a good place to.lineTo(, 555);
@@ -205,6 +206,7 @@ var Engine = (function(global) {
             rock.reset();
         });
         player.reset();
+        timer.reset();
         pauseFlag = false;
     }
 

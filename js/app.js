@@ -263,6 +263,45 @@ Rock.prototype.render = function() {
 
 /*
  *
+ *   Define Timer class and corresponding prototype methods
+ *
+ */
+var Timer = function() {
+    this.xPanel = 10;
+    this.yPanel = 50;
+    this.width = 190;
+    this.height = 20;
+    this.xText = 10;
+    this.yText = 85;
+    this.xTime = 125;
+    this.yTime = 85;
+};
+
+Timer.prototype.reset = function() {
+    this.time = 60;
+    setInterval(timer.update, 1000);
+
+};
+
+Timer.prototype.update = function() {
+    if (player.characterSelectedFlag && player.alive && timer.time > 0) {
+    timer.time--;
+    }
+    if (timer.time <= 0 && player.score < 200) {
+        player.alive = false;
+    }
+};
+
+Timer.prototype.render = function() {
+    displayPanel(this.xPanel, this.yPanel, this.width, this.height, 'lightblue');
+    ctx.font = '32pt Lobster';
+    ctx.fillStyle = 'blue';
+    ctx.fillText('Timer: ', this.xText, this.yText);
+    ctx.fillText(timer.time, this.xTime, this.yTime);
+};
+
+/*
+ *
  *   Helper functions
  *
  */
@@ -385,6 +424,8 @@ for (i = 1; i <= 2; i++) {
     allRocks.push(new Rock);
 }
 var player = new Player();
+
+var timer = new Timer();
 
 /*
  *
