@@ -79,6 +79,7 @@ Player.prototype.reset = function() {
     this.score = 0;
     this.selectorBox = 0;
     this.anotherGameFlag = false;
+    this.gameWon = false;
 };
 
 /* Update player by checking number of lives,
@@ -161,13 +162,13 @@ Player.prototype.handleInput = function(keyInput) {
     /* Check for return-key at the Game Over screen to start
      * new game.
      */
-    if (keyInput === 'return' && player.alive === false) {
+    if (keyInput === 'return' && (player.alive === false || player.gameWon === true)) {
         player.anotherGameFlag = true;
     }
 
     /* Check for spacebar to pause game.
      */
-    if (keyInput === 'space' && player.characterSelectedFlag === true) {
+    if (keyInput === 'space' && player.characterSelectedFlag === true && player.alive === true && player.gameWon === false) {
         pauseFlag = !pauseFlag;
     }
 
@@ -289,6 +290,9 @@ Timer.prototype.update = function() {
     }
     if (timer.time <= 0 && player.score < 200) {
         player.alive = false;
+    }
+    if (player.score >= 200) {
+        player.gameWon = true;
     }
 };
 

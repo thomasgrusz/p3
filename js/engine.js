@@ -50,13 +50,17 @@ var Engine = (function(global) {
             selectPlayer();
         }
 
-        if (pauseFlag === false && player.characterSelectedFlag === true && player.alive === true) {
+        if (pauseFlag === false && player.characterSelectedFlag === true && player.alive === true && player.gameWon === false) {
             update(dt);
             render();
         }
 
         if (player.alive === false) {
             gameOver();
+        }
+
+        if (player.gameWon === true) {
+            gameWon();
         }
 
         /* Set our lastTime variable which is used to determine the time delta
@@ -242,6 +246,23 @@ var Engine = (function(global) {
         ctx.font = '30pt Lobster';
         ctx.fillStyle = 'green';
         ctx.fillText('GAME OVER!', 140, 300);
+        ctx.font = '20pt Lobster';
+        ctx.fillStyle = 'green';
+        ctx.fillText('press return for another game!', 90, 350);
+        if (player.anotherGameFlag === true) {
+            player.anotherGameFlag = false;
+            init();
+        }
+    }
+
+    function gameWon() {
+        renderBackground();
+        player.renderScore();
+        displayPanel(30, 200, 445, 210, 'white');
+        displayPanelOutline(30, 200, 445, 210, 'green');
+        ctx.font = '30pt Lobster';
+        ctx.fillStyle = 'green';
+        ctx.fillText('YOU ARE A WINNER!', 70, 300);
         ctx.font = '20pt Lobster';
         ctx.fillStyle = 'green';
         ctx.fillText('press return for another game!', 90, 350);
