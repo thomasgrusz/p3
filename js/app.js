@@ -68,6 +68,8 @@ var Player = function() {
         'images/char-princess-girl.png'
     ];
     this.characterSelectedFlag = false;
+    this.startScreenDisplay = true;
+    this.startFirstGame = false;
     this.selectorBoxXCoords = [40, 130, 215, 310, 400];
 };
 
@@ -142,7 +144,11 @@ Player.prototype.handleInput = function(keyInput) {
      * the startscreen and move the lightgreen selectorbox
      * from character to character.
      */
-    if (player.characterSelectedFlag === false) {
+    if (this.startScreenDisplay === true && keyInput === 'return') {
+        this.startFirstGame = true;
+    }
+
+    if (player.characterSelectedFlag === false && player.startScreenDisplay === false) {
         if (keyInput === 'left' && player.selectorBox > 0) {
             player.selectorBox = player.selectorBox - 1;
         } else if (keyInput === 'left' && player.selectorBox === 0) {

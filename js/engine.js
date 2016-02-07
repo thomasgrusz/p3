@@ -46,7 +46,11 @@ var Engine = (function(global) {
          * functions, pass along the time delta to our update function since
          * it may be used for smooth animation.
          */
-        if (player.characterSelectedFlag === false) {
+        if (player.startScreenDisplay === true) {
+            startScreen();
+        }
+
+        if (player.characterSelectedFlag === false && player.startScreenDisplay === false) {
             selectPlayer();
         }
 
@@ -236,6 +240,27 @@ var Engine = (function(global) {
         ctx.fillStyle = 'green';
         ctx.fillText('select your hero and press ENTER!', 75, 400);
         displayPanelOutline(player.selectorBoxXCoords[player.selectorBox], 220, 63, 110, 'lightgreen');
+    }
+
+    function startScreen() {
+        renderBackground();
+        displayPanel(30, 120, 445, 380, 'white');
+        displayPanelOutline(30, 120, 445, 380, 'green');
+        ctx.font = '32pt Lobster';
+        ctx.fillStyle = 'green';
+        ctx.fillText('GAME INFO', 140, 200);
+        ctx.font = '20pt Lobster';
+        ctx.fillText('get 200 points in 60 seconds', 100, 270);
+        ctx.fillText('- reach water = 10 points', 120, 330);
+        ctx.fillText('- blue gem = 80 points', 120, 360);
+        ctx.fillText('- green gem = 50 points', 120, 390);
+        ctx.fillText('- orange gem = 30 points', 120, 420);
+        ctx.fillStyle = 'red';
+        ctx.fillText('press return to start!', 150, 480);
+        if (player.startFirstGame === true) {
+            player.startScreenDisplay = false;
+            init();
+        }
     }
 
     function gameOver() {
