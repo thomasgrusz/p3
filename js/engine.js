@@ -286,11 +286,11 @@ var Engine = (function(global) {
 
     function gameWon() {
         renderBackground();
-        player.renderScore();
+        timer.render();
         displayPanel(30, 200, 445, 210, 'white');
         displayPanelOutline(30, 200, 445, 210, 'green');
         ctx.font = '30pt Lobster';
-        ctx.fillStyle = 'green';
+        ctx.fillStyle = 'red';
         ctx.fillText('YOU ARE A WINNER!', 70, 300);
         ctx.font = '20pt Lobster';
         ctx.fillStyle = 'green';

@@ -1,7 +1,11 @@
 /*
- *
- *   Define Enemy class and corresponding prototype methods
- *
+ *  Define Enemy class and corresponding prototype methods.
+ *  This function is called at the bottom of app.js using the 'new' keyword to
+ *  instantiate enemy objects.
+ *  Using the Enemy class ensures encapsulation of properties and prototype
+ *  functions.
+ *  The yCoords array is used to fit objects within background tiles along
+ *  the y-axis.
  */
 var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
@@ -9,8 +13,11 @@ var Enemy = function() {
     this.width = 101;
 };
 
-/* Reset an enemy object by placing it left off screen
- * and assigning a random y-axis and speed
+/*  Reset an enemy object by placing it left off screen and assigning a random
+ *  y-axis and random speed and reseting the collisionFlag for
+ *  player-collisions to false.
+ *  This function is called from the enemy.update() prototype function in
+ *  app.js and the reset() function in engine.js.
  */
 Enemy.prototype.reset = function() {
     this.x = -100;
@@ -19,9 +26,14 @@ Enemy.prototype.reset = function() {
     this.collisionFlag = false;
 };
 
-/* Update the x,y coordinates of an enemy.
- * Check whether enemy leaves the window on the right
- * and if yes, reset enemy by calling the enemy.reset() function.
+/*
+ *  Check if the enemy object is oncreen and if yes increase the x-coordinate
+ *  by speed * time-delta (dt). Time-delta ensures a constant speed over various
+ *  devices. If the enemy object has left the screen on the richt it will be
+ *  reset by calling the enemy.reset() prototype function.
+ *  If there is a collision with the player, the enemy gets reset and the player
+ *  gets placed at its starting x,y-position and loses a life.
+ *  This function is called from the updateEntities() function in engine.js.
  */
 Enemy.prototype.update = function(dt) {
     if (this.x < 505) {
@@ -37,16 +49,26 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
-/* Render an enemy object
+/*  Render an enemy object on the canvas.
+ *  This function is called from the renderEntities() function in engine.js.
  */
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 /*
- *
- *   Define Player class and corresponding prototype methods
- *
+ *  Define Player class and corresponding prototype methods.
+ *  This function is called at the bottom of app.js using the 'new' keyword to
+ *  instantiate a player object.
+ *  The xCoords and yCoords arrays are used to fit the player object within
+ *  background tiles. emptyPixelOffset defines the number of empty pixels to
+ *  the left and right of the player sprite. The characters-array holds the
+ *  various player images that can be chosen from at the beginning of the
+ *  game. CharacterSelectedFlag is set to false as no player image has
+ *  been chosen yet. StartScreenDisplay is set to true and startFirstGame to
+ *  false, so that the startscreen info panel will be displayed.
+ *  The selectorBoxXCoords array contains the x-coords for the lightgreen
+ *  box drawn around the selected character image at the beginning the game.
  */
 var Player = function() {
     this.xCoords = [1, 101, 201, 301, 401];
@@ -73,6 +95,12 @@ var Player = function() {
     this.selectorBoxXCoords = [40, 130, 215, 310, 400];
 };
 
+/*  Reset the player object by placing it to its starting position, assigning
+ *  3 lives and setting the score to 0.
+ *  The x-coordinate for the lightgreen selector box is set to be drawn around
+ *  the first player image in the the player.characters array.
+ *  This function is called from the reset() function in engine.js.
+ */
 Player.prototype.reset = function() {
     this.x = player.xOrigin;
     this.y = player.yOrigin;
@@ -84,9 +112,12 @@ Player.prototype.reset = function() {
     this.gameWon = false;
 };
 
-/* Update player by checking number of lives,
- * adjusting lives, checking if player reached
- * water and resetting player coordinates.
+/*  Update the player object by checking the remaining number of lives and if
+ *  there are no lives left the player.alive property is set to false, i.e.
+ *  the player dies. Check if the player has reached the water and if yes,
+ *  place the player to its starting position and increase the score by 10
+ *  points.
+ *  This function is called from the updateEntities() function in engine.js.
  */
 Player.prototype.update = function() {
     if (this.lives <= 0) {
@@ -99,7 +130,9 @@ Player.prototype.update = function() {
     }
 };
 
-/* Render player and heart icons, representing lives
+/* Render the player object and heart icons on canvas, representing player
+ *  lives.
+ *  This function is called from the renderEntities() function in engine.js.
  */
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -108,7 +141,15 @@ Player.prototype.render = function() {
     }
 };
 
-/* Detect collision between collisionObject and player
+/*  Detect collision between collisionObject and player.
+ *  The collisionObject can be an enemy or collectible (gem).
+ *  The for-loop makes sure that all 6 y-coordinates stored in the object array
+ *  'yCoords' of the collisionObject and the player are compared.
+ *  If the yCoords indices match, the xCoords indices of the collisionObject and player
+ *  object are compared.
+ *  If the xCoords indices of both collisionObject and player overlap, the
+ *  collisionFlag for the collisionObject is set to true.
+ *  This function is called from the checkCollisions() funtion in engine.js.
  */
 Player.prototype.collisionDetect = function(collisionObject) {
     for (var j = 0; j<= 5; j++) {
@@ -127,7 +168,11 @@ Player.prototype.collisionDetect = function(collisionObject) {
     }
 };
 
-/* Render score
+/*  Render score on canvas.
+ *  The score is displayed in green on a lightgreen background panel at the
+ *  lower right corner of the canvas.
+ *  This function is called by the renderEntities() and gameOver() functions
+ *  in engine.js.
  */
 Player.prototype.renderScore = function() {
     displayPanel(290, 545, 190, 20, 'lightgreen');
@@ -137,17 +182,26 @@ Player.prototype.renderScore = function() {
     ctx.fillText(player.score, 400, 580);
 };
 
-/* Handle player input from keyboard
+/*  Handle input from keyboard.
+ *  This function is called by the addEventListener() function at the bottom of
+ *  app.js.
  */
 Player.prototype.handleInput = function(keyInput) {
-    /* Check if left or right keys have been pressed at
-     * the startscreen and move the lightgreen selectorbox
-     * from character to character.
+    /*  Check if the return key has been pressed at the startscreen with the
+     *  game info panel and if yes set the starFirstGame flag to true.
      */
     if (this.startScreenDisplay === true && keyInput === 'return') {
         this.startFirstGame = true;
     }
 
+    /*  Check if left or right keys have been pressed at the player character
+     *  selector screen and move the lightgreen selectorbox from character to
+     *  character. The selectorBox property contains the index for the array
+     *  containing the x-coordinates of the actual lightgreen selectorbox.
+     *  If the return key is pressed, the character with the lightgreen
+     *  selectorbox around it is chosen for the game and characterSelectedFlag
+     *  is set to true, so the game can start.
+     */
     if (player.characterSelectedFlag === false && player.startScreenDisplay === false) {
         if (keyInput === 'left' && player.selectorBox > 0) {
             player.selectorBox = player.selectorBox - 1;
@@ -165,25 +219,32 @@ Player.prototype.handleInput = function(keyInput) {
         }
     }
 
-    /* Check for return-key at the Game Over screen to start
-     * new game.
+    /*  Check for return-key at the Game-Over or Game-Won screens to start a new game.
      */
     if (keyInput === 'return' && (player.alive === false || player.gameWon === true)) {
         player.anotherGameFlag = true;
     }
 
-    /* Check for spacebar to pause game.
+    /*  Check if spacebar is pressed to pause an active game.
      */
-    if (keyInput === 'space' && player.characterSelectedFlag === true && player.alive === true && player.gameWon === false) {
+    if (keyInput === 'space' &&
+        player.characterSelectedFlag === true &&
+        player.alive === true &&
+        player.gameWon === false) {
         pauseFlag = !pauseFlag;
     }
 
-    /* Check for keyboard input during game and move character
-     * accordingly.
+    /*  Check for left, right, up, down arrow keys during active unpaused game
+     *  and move player object accordingly accross canvas. The function also
+     *  checks if there are rocks around the player which prevent movement.
      */
     if (player.characterSelectedFlag === true && pauseFlag === false) {
-
+        /*  The isRockLRDU array contains 4 boolean variables indicating if
+         *  there are rocks on the Left, Right, Down and Up of the player in
+         *  that order.
+         */
         var isRockLRDU = isRock(this.xCoords.indexOf(this.x), this.yCoords.indexOf(this.y));
+
 
         if (keyInput === 'left' && this.x > player.leftBorder && !isRockLRDU[0]) {
             this.x = this.xCoords[this.xCoords.indexOf(this.x) - 1];
@@ -198,9 +259,12 @@ Player.prototype.handleInput = function(keyInput) {
 };
 
 /*
- *
- *   Define Collectibles class and corresponding prototype methods
- *
+ *  Define Collectible class and corresponding prototype methods.
+ *  This function is called at the bottom of app.js using the 'new' keyword to
+ *  instantiate collectible objects.
+ *  The xCoords and yCoords arrays are used to fit the collectible object within
+ *  background tiles. The collectibles-array holds the various collectibles
+ *  images that can appear during a game.
  */
 var Collectible = function() {
     this.xCoords = [27, 127, 227, 327, 427];
@@ -214,6 +278,12 @@ var Collectible = function() {
     ];
 };
 
+/*  Reset a collectible object by placing it randomly on the screen except for
+ *  the player's start position and set its collisionFlag to false.
+ *  The function also checks for already placed collectibles in the
+ *  global 'allCollectibles' array and avoids overlap.
+ *  This function is called from the reset() function in engine.js.
+ */
 Collectible.prototype.reset = function() {
     do {
         this.x = this.xCoords[random_number(0, 4)];
@@ -224,6 +294,13 @@ Collectible.prototype.reset = function() {
     this.collisionFlag = false;
 };
 
+/*  Check for collision between a collectible object and the player and if
+ *  true, place the collectible offscreen.
+ *  The function also checks which type of collectible (blue, green, orange)
+ *  has been collected and updates the score accordingly, i.e. blue gems yield
+ *  80 points, green gems 50 points and orange gems 30 points.
+ *  This function is called by the updateEntities() function in engine.js.
+ */
 Collectible.prototype.update = function() {
     if (this.collisionFlag === true) {
         this.collisionFlag = false;
@@ -240,14 +317,19 @@ Collectible.prototype.update = function() {
     }
 };
 
+/*  Render a collectile object on the canvas.
+ *  This function is called from the renderEntities() function in engine.js.
+ */
 Collectible.prototype.render = function() {
     ctx.drawImage(Resources.get(this.randomCollectible), this.x, this.y, this.width, this.height);
 };
 
 /*
- *
- *   Define Rock class and corresponding prototype methods
- *
+ *  Define Rock class and corresponding prototype methods.
+ *  This function is called at the bottom of app.js using the 'new' keyword to
+ *  instantiate rock objects.
+ *  The xCoords and yCoords arrays are used to fit the rock object within
+ *  background tiles.
  */
 var Rock = function() {
     this.width = 101;
@@ -256,6 +338,12 @@ var Rock = function() {
     this.sprite = 'images/Rock.png';
 };
 
+/*  Reset a rock object by placing it randomly on the screen except for
+ *  the player's start position.
+ *  The function also checks for already placed rocks and gems in the global
+ *  'allRocks' and 'allCollectibles' arrays and avoids overlap.
+ *  This function is called from the reset() function in engine.js.
+ */
 Rock.prototype.reset = function() {
     do {
         this.x = this.xCoords[random_number(0, 4)];
@@ -264,13 +352,19 @@ Rock.prototype.reset = function() {
     while (this.x === 201 && this.y === 392 || overlap(allRocks, allRocks.indexOf(this)) || isGem(allRocks.indexOf(this)));
 };
 
+/*  Render a rock object on the canvas.
+ *  This function is called from the renderEntities() function in engine.js.
+ */
 Rock.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 /*
- *
- *   Define Timer class and corresponding prototype methods
+ *  Define Timer class and corresponding prototype methods.
+ *  This function is called at the bottom of app.js using the 'new' keyword to
+ *  instantiate a timer object.
+ *  The function also defines the dimensions of the timer display panel and the
+ *  x/y-coordinates of the timer text and time elapsed.
  *
  */
 var Timer = function() {
@@ -284,13 +378,25 @@ var Timer = function() {
     this.yTime = 85;
 };
 
+/*  Reset the timer object by setting it to 60 seconds and clear a potentially
+ *  existing setInveral() function. Then use the setInterval() function to call
+ *  the timer.update() prototype function every second (1000 milliseconds).
+ *  This function is called from the reset() function in engine.js.
+ */
 Timer.prototype.reset = function() {
     this.time = 60;
     clearInterval(timer.myTimer);
     this.myTimer = setInterval(timer.update, 1000);
-
 };
 
+/*  Reduce the timer by 1 if the game is active and the timer is greater than 0.
+ *  If the timer has reached 0 and the player has not yet gathered 200 points
+ *  the player dies and the game is over (player.alive = false).
+ *  If the score has reached 200 and the timer has not reached 0 the game is
+ *  won and the clearInterval function is called to stop the timer.
+ *  This function is called by setting the setInterval() function in the
+ *  timer.reset() prototype function in app.js.
+ */
 Timer.prototype.update = function() {
     if (player.characterSelectedFlag && player.alive && timer.time > 0) {
     timer.time--;
@@ -304,6 +410,9 @@ Timer.prototype.update = function() {
     }
 };
 
+/*  Render the timer on a lightblue panel in the upper left corner of the canvas.
+ *  This function is called by the renderEntities() function in engine.js.
+ */
 Timer.prototype.render = function() {
     displayPanel(this.xPanel, this.yPanel, this.width, this.height, 'lightblue');
     ctx.font = '32pt Lobster';
@@ -318,7 +427,7 @@ Timer.prototype.render = function() {
  *
  */
 
-/* Create random numbers between 'lower' and 'upper'
+/*  Return a random number between the 'lower' and 'upper' parameters.
  */
 function random_number(lower, upper) {
     if (lower === 0){
@@ -329,7 +438,7 @@ function random_number(lower, upper) {
     }
 }
 
-/* Display panel with rounded corners
+/*  Display a panel with rounded corners on the canvas.
  */
 function displayPanel(x,y,width,height,fillColor) {
     ctx.fillStyle = fillColor;
@@ -346,7 +455,7 @@ function displayPanel(x,y,width,height,fillColor) {
     ctx.fill();
 }
 
-/* Display panel-outline with rounded corners
+/*  Display a panel-outline with rounded corners on the canvas.
  */
 function displayPanelOutline(x,y,width,height,outlineColor) {
     ctx.lineWidth = 5;
@@ -364,7 +473,10 @@ function displayPanelOutline(x,y,width,height,outlineColor) {
     ctx.stroke();
 }
 
-/* Check if there is a rock left, right, down or up of player
+/*  Check if there is a rock left, right, down or up of player's current position.
+ *  The function returns an array containing 4 boolean variables that indicate
+ *  the presence of a rock left, right, down or up in that order.
+ *  The function is called by the player.handleInput() prototype functin in app.js.
  */
 function isRock(playerXIndex, playerYIndex) {
     var isRockLRDU = [false, false, false, false];
@@ -385,7 +497,8 @@ function isRock(playerXIndex, playerYIndex) {
     return isRockLRDU;
 }
 
-/* Check if there is an overlap between an array's object and the other array elements
+/*  Check if there is an overlap between an array's object and the other elements
+ *  in the same array and return a boolean value.
  */
 function overlap(array, objectIndex) {
     if (objectIndex > 0) {
@@ -398,7 +511,10 @@ function overlap(array, objectIndex) {
     return false;
 }
 
-/* Check if there is an overlap between gem and a rock that wants to be placed
+/*  Check if there is an overlap between a rock that wants to be placed and
+ *  all existing collectibles on the screen (allCollectibles array).
+ *  The function returns the value true if there is an overlap.
+ *  This function is called by the rock.reset() prototype function in app.js.
  */
 function isGem(objectIndex) {
     var returnValue = false;
@@ -417,32 +533,32 @@ function isGem(objectIndex) {
  *
  */
 var pauseFlag;
+var allEnemies = [];
+var allCollectibles = [];
+var allRocks = [];
 
 /*
- *   Instantiate entities by
- *   - placing all enemies into an array called 'allEnemies' and
- *   - placeing player object into a variable called 'player'
+ *   Instantiate entities by placing
+ *   - all enemies into an array called 'allEnemies',
+ *   - all collectibles into an array called 'allCollectibles',
+ *   - all rocks into an array called 'allRocks',
+ *   - the player object into a variable called 'player'
+ *   - the timer object into a variable called 'timer'
  */
-var allEnemies = [];
 for (var i = 1; i <= 3; i++) {
     allEnemies.push(new Enemy());
 }
-var allCollectibles = [];
 for (i = 1; i <= 2; i++) {
     allCollectibles.push(new Collectible);
 }
-var allRocks = [];
 for (i = 1; i <= 2; i++) {
     allRocks.push(new Rock);
 }
 var player = new Player();
-
 var timer = new Timer();
 
 /*
- *
- *  Listen for key strokes and send keys to Player.handleInput() method.
- *
+ *  Listen for key strokes and send keys to player.handleInput() prototype method.
  */
 document.addEventListener('keydown', function(e) {
     var allowedKeys = {
