@@ -1,7 +1,7 @@
 /* Engine.js
  * This file provides the game loop functionality (update entities and render),
  * draws the initial game board on the screen, and then calls the update and
- * render methods on your player and enemy objects (defined in your app.js).
+ * render methods on the player and other objects as defined in app.js.
  *
  * A game engine works by drawing the entire game screen over and over, kind of
  * like a flipbook you may have created as a kid. When your player moves across
@@ -42,9 +42,20 @@ var Engine = (function(global) {
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
-        /* Check whether the game is paused and if not call our update/render
-         * functions, pass along the time delta to our update function since
-         * it may be used for smooth animation.
+        /* Check the game state and call the appropriate function.
+         * If the startScreenDisplay flag is set to true, call the startScreen()
+         * function in engine.js to display the general game info-panel.
+         * After the startscreen, check whether the player character has been
+         * chosen or not (characterSelectedFlag = true) and if not call the
+         * selectPlayer() function in engine.js.
+         * If the player character has been chosen and the game is not paused
+         * (pauseFlag = false) call our update/render functions and pass along
+         * the time delta to our update function since it may be used for smooth
+         * animation.
+         * If the time is up or the player has lost all lives (player.alive = false)
+         * call the gameOver function in engine.js.
+         * If the player has gathered 200 points before the time is up
+         * (player.gameWon = true) call the gameWon() function in engine.js.
          */
         if (player.startScreenDisplay === true) {
             startScreen();
@@ -90,13 +101,9 @@ var Engine = (function(global) {
     }
 
     /* This function is called by main (our game loop) and itself calls all
-     * of the functions which may need to update entity's data. Based on how
-     * you implement your collision detection (when two entities occupy the
-     * same space, for instance when your character should die), you may find
-     * the need to add an additional function call here. For now, we've left
-     * it commented out - you may or may not want to implement this
-     * functionality this way (you could just implement collision detection
-     * on the entities themselves within your app.js file).
+     * of the functions which may need to update entity's data.
+     * The function also calls the checkCollision() function to check for any
+     * collision between the player and collectibles or enemies.
      */
     function update(dt) {
         updateEntities(dt);
@@ -104,11 +111,9 @@ var Engine = (function(global) {
     }
 
     /* This is called by the update function and loops through all of the
-     * objects within your allEnemies array as defined in app.js and calls
-     * their update() methods. It will then call the update function for your
-     * player object. These update methods should focus purely on updating
-     * the data/properties related to the object. Do your drawing in your
-     * render methods.
+     * objects within the entities arrays as defined in app.js and calls
+     * their update() methods. It will then call the update function for the
+     * player object.
      */
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
@@ -122,7 +127,7 @@ var Engine = (function(global) {
 
     function checkCollisions() {
 
-        /* Check collisions between player and all enemies
+        /* Check collisions between player and all enemies and collectibles.
          */
         allEnemies.forEach(function(enemy) {
             player.collisionDetect(enemy);
@@ -178,8 +183,8 @@ var Engine = (function(global) {
     }
 
     /* This function is called by the render function and is called on each game
-     * tick. Its purpose is to then call the render functions you have defined
-     * on your enemy and player entities within app.js
+     * tick. Its purpose is to then call the render functions defined in app.js
+     * for collectibles, rocks, enemies, score and timer.
      */
     function renderEntities() {
         /* Loop through all of the objects within the allEnemies array and call
@@ -199,9 +204,10 @@ var Engine = (function(global) {
         timer.render();
     }
 
-    /* This function does nothing but it could have been a good place to.lineTo(, 555);
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
+    /* This function resets all entities defined in app.js before a (new) game.
+     * It's called at the beginning after the player character has been
+     * selected and then after each won or lost game, when the return key
+     * has been pressed (in app.js player.handleInput method).
      */
     function reset() {
         allEnemies.forEach(function(enemy){
@@ -218,11 +224,14 @@ var Engine = (function(global) {
         pauseFlag = false;
     }
 
-    /* This function is called by the main() function and first draws a white
-     * rounded square, displaying all player-characters to choose from.
-     * The player can be highlighted via arrow keys and selected by hitting return
+    /* This function is called only once by the main() function and draws a
+     * white rounded square with a green outline, displaying all
+     * player-characters to choose from. The player is highlighted by a
+     * lightgreen selectorbox around it which can be moved across the various
+     * characters via arrow keys. Hitting the return key choses the currently
+     * highlighted character for the game and sets the characterSelectedFlag
+     * to true (this is done in app.js in the player.handleInput method).
      */
-
     function selectPlayer() {
         renderBackground();
         /* Draw white background panel with green outline
@@ -242,6 +251,12 @@ var Engine = (function(global) {
         displayPanelOutline(player.selectorBoxXCoords[player.selectorBox], 220, 63, 110, 'lightgreen');
     }
 
+    /* This function is called by the main() function only once and displays
+     * the start-screen with the general game-info panel. After hitting return
+     * (checked for in app.js/ player.handleInput method) the init() function
+     * is called and the 'press space to pause game' message is displayed on the
+     * html document.
+     */
     function startScreen() {
         renderBackground();
         displayPanel(30, 120, 445, 380, 'white');
@@ -267,6 +282,11 @@ var Engine = (function(global) {
         }
     }
 
+    /* This function is called by the main() function when the player.alive
+     * property is set to false. After hitting return (checked for in
+     * app.js/ player.handleInput method) the init() function is called to
+     * restart the game.
+     */
     function gameOver() {
         renderBackground();
         player.renderScore();
@@ -284,6 +304,11 @@ var Engine = (function(global) {
         }
     }
 
+    /* This function is called by the main() function when the player.gameWon
+     * property is set to true. After hitting return (checked for in
+     * app.js/ player.handleInput method) the init() function is called to
+     * restart the game.
+     */
     function gameWon() {
         renderBackground();
         timer.render();
@@ -301,9 +326,9 @@ var Engine = (function(global) {
         }
     }
 
-    /* Go ahead and load all of the images we know we're going to need to
-     * draw our game level. Then set init as the callback method, so that when
-     * all of these images are properly loaded our game will start.
+    /* Load all of the images needed for the game. Then set init as the
+     * callback method, so that when all of these images are properly
+     * loaded the game will start.
      */
     Resources.load([
         'images/stone-block.png',
