@@ -259,10 +259,10 @@ var Engine = (function(global) {
         ctx.fillText('press return to start!', 150, 480);
         if (player.startFirstGame === true) {
             player.startScreenDisplay = false;
-            var node = document.createElement('H2');
-            var textnode = document.createTextNode('press "space" to pause game');
+            var node = doc.createElement('H2');
+            var textnode = doc.createTextNode('press "space" to pause game');
             node.appendChild(textnode);
-            document.getElementById("body").appendChild(node);
+            doc.getElementById("body").appendChild(node);
             init();
         }
     }
