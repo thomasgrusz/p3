@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: app.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: app.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  *  @class
  *  Define Enemy class and corresponding prototype methods.
  *  This function is called at the end of app.js using the 'new' keyword to
@@ -38,7 +66,7 @@ Enemy.prototype.reset = function() {
  *  @param {number} dt - Speed equalizer across devices
  */
 Enemy.prototype.update = function(dt) {
-    if (this.x < 505) {
+    if (this.x &lt; 505) {
         this.x = this.x + (this.speed * dt);
     } else {
         this.reset();
@@ -128,10 +156,10 @@ Player.prototype.reset = function() {
  *  This function is called by the updateEntities() function in engine.js.
  */
 Player.prototype.update = function() {
-    if (this.lives <= 0) {
+    if (this.lives &lt;= 0) {
         this.alive = false;
     }
-    if (this.y < player.waterBorder) {
+    if (this.y &lt; player.waterBorder) {
         this.x = player.xOrigin;
         this.y = player.yOrigin;
         player.score += 10;
@@ -146,7 +174,7 @@ Player.prototype.update = function() {
  */
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    for (var i = 1; i <= this.lives; i++) {
+    for (var i = 1; i &lt;= this.lives; i++) {
         ctx.drawImage(Resources.get('images/Heart.png'), -30+i*40, 525);
     }
 };
@@ -165,8 +193,8 @@ Player.prototype.render = function() {
  *  @param {object} collisionObject - Object to check player-collision against
  */
 Player.prototype.collisionDetect = function(collisionObject) {
-    for (var j = 0; j<= 5; j++) {
-        if (collisionObject.y === collisionObject.yCoords[j] && player.y === this.yCoords[j]) {
+    for (var j = 0; j&lt;= 5; j++) {
+        if (collisionObject.y === collisionObject.yCoords[j] &amp;&amp; player.y === this.yCoords[j]) {
             if (collisionObject.x > this.x) {
                 if ((this.x + this.width -this.emptyPixelOffset) > collisionObject.x) {
                     collisionObject.collisionFlag = true;
@@ -209,7 +237,7 @@ Player.prototype.handleInput = function(keyInput) {
      *  game info-panel and if yes set the starFirstGame flag to true.
      *  The startFirstGame flag is tested for in the main() game-loop in engine.js.
      */
-    if (this.startScreenDisplay === true && keyInput === 'return') {
+    if (this.startScreenDisplay === true &amp;&amp; keyInput === 'return') {
         this.startFirstGame = true;
     }
 
@@ -223,15 +251,15 @@ Player.prototype.handleInput = function(keyInput) {
      *  is set to true, so the game can start. characterSelectedFlag is tested also tested for
      *  in the main() game-loop in engin.js.
      */
-    if (player.characterSelectedFlag === false && player.startScreenDisplay === false) {
-        if (keyInput === 'left' && player.selectorBox > 0) {
+    if (player.characterSelectedFlag === false &amp;&amp; player.startScreenDisplay === false) {
+        if (keyInput === 'left' &amp;&amp; player.selectorBox > 0) {
             player.selectorBox = player.selectorBox - 1;
-        } else if (keyInput === 'left' && player.selectorBox === 0) {
+        } else if (keyInput === 'left' &amp;&amp; player.selectorBox === 0) {
             player.selectorBox = 4;
         }
-        if (keyInput === 'right' && player.selectorBox < 4) {
+        if (keyInput === 'right' &amp;&amp; player.selectorBox &lt; 4) {
             player.selectorBox = player.selectorBox + 1;
-        } else if (keyInput === 'right' && player.selectorBox === 4) {
+        } else if (keyInput === 'right' &amp;&amp; player.selectorBox === 4) {
             player.selectorBox = 0;
         }
         if (keyInput === 'return') {
@@ -244,16 +272,16 @@ Player.prototype.handleInput = function(keyInput) {
      *  Check for return-key at the Game-Over or Game-Won screens to start a new game.
      *  anotherGameFlag is tested for in the gameOver() and gameWon() functions in engine.js.
      */
-    if (keyInput === 'return' && (player.alive === false || player.gameWon === true)) {
+    if (keyInput === 'return' &amp;&amp; (player.alive === false || player.gameWon === true)) {
         player.anotherGameFlag = true;
     }
 
     /**
      *  Check if spacebar is pressed to pause an active game.
      */
-    if (keyInput === 'space' &&
-        player.characterSelectedFlag === true &&
-        player.alive === true &&
+    if (keyInput === 'space' &amp;&amp;
+        player.characterSelectedFlag === true &amp;&amp;
+        player.alive === true &amp;&amp;
         player.gameWon === false) {
         pauseFlag = !pauseFlag;
     }
@@ -263,7 +291,7 @@ Player.prototype.handleInput = function(keyInput) {
      *  and move player object accordingly accross canvas. The function also
      *  checks if there are rocks around the player which prevent movement.
      */
-    if (player.characterSelectedFlag === true && pauseFlag === false) {
+    if (player.characterSelectedFlag === true &amp;&amp; pauseFlag === false) {
         /**
          *  The isRockLRDU array contains 4 boolean variables indicating if
          *  there are rocks on the Left, Right, Down and Up of the player in
@@ -275,13 +303,13 @@ Player.prototype.handleInput = function(keyInput) {
          *  The player is moved by increasing or decreasing the index pointing to the actual
          *  x- and y-coordinates in the player.xCoords and player.yCoords array.
          */
-        if (keyInput === 'left' && this.x > player.leftBorder && !isRockLRDU[0]) {
+        if (keyInput === 'left' &amp;&amp; this.x > player.leftBorder &amp;&amp; !isRockLRDU[0]) {
             this.x = this.xCoords[this.xCoords.indexOf(this.x) - 1];
-        } else if (keyInput === 'right' && this.x < player.rightBorder && !isRockLRDU[1]) {
+        } else if (keyInput === 'right' &amp;&amp; this.x &lt; player.rightBorder &amp;&amp; !isRockLRDU[1]) {
             this.x = this.xCoords[this.xCoords.indexOf(this.x) + 1];
-        } else if (keyInput === 'down' && this.y < player.lowerBorder && !isRockLRDU[2]) {
+        } else if (keyInput === 'down' &amp;&amp; this.y &lt; player.lowerBorder &amp;&amp; !isRockLRDU[2]) {
             this.y = this.yCoords[this.yCoords.indexOf(this.y) + 1];
-        } else if (keyInput === 'up' && this.y > player.upperBorder && !isRockLRDU[3]) {
+        } else if (keyInput === 'up' &amp;&amp; this.y > player.upperBorder &amp;&amp; !isRockLRDU[3]) {
             this.y = this.yCoords[this.yCoords.indexOf(this.y) - 1];
         }
     }
@@ -322,7 +350,7 @@ Collectible.prototype.reset = function() {
         this.x = this.xCoords[random_number(0, 4)];
         this.y = this.yCoords[random_number(1, 5)];
     }
-    while (this.x === 227 && this.y === 449 || overlap(allCollectibles, allCollectibles.indexOf(this)));
+    while (this.x === 227 &amp;&amp; this.y === 449 || overlap(allCollectibles, allCollectibles.indexOf(this)));
     this.randomCollectible = this.collectibles[random_number(0, 2)];
     this.collisionFlag = false;
 };
@@ -389,7 +417,7 @@ Rock.prototype.reset = function() {
         this.x = this.xCoords[random_number(0, 4)];
         this.y = this.yCoords[random_number(1, 5)];
     }
-    while (this.x === 201 && this.y === 392 || overlap(allRocks, allRocks.indexOf(this)) || isGem(allRocks.indexOf(this)));
+    while (this.x === 201 &amp;&amp; this.y === 392 || overlap(allRocks, allRocks.indexOf(this)) || isGem(allRocks.indexOf(this)));
 };
 
 /**
@@ -445,10 +473,10 @@ Timer.prototype.reset = function() {
  *  timer.reset() method.
  */
 Timer.prototype.update = function() {
-    if (player.characterSelectedFlag && player.alive && timer.time > 0) {
+    if (player.characterSelectedFlag &amp;&amp; player.alive &amp;&amp; timer.time > 0) {
         timer.time--;
     }
-    if (timer.time <= 0 && player.score < 200) {
+    if (timer.time &lt;= 0 &amp;&amp; player.score &lt; 200) {
         player.alive = false;
     }
     if (player.score >= 200) {
@@ -550,16 +578,16 @@ function displayPanelOutline(x,y,width,height,outlineColor) {
 function isRock(playerXIndex, playerYIndex) {
     var isRockLRDU = [false, false, false, false];
     allRocks.forEach(function(rock) {
-        if (playerXIndex - 1 === rock.xCoords.indexOf(rock.x) && playerYIndex === rock.yCoords.indexOf(rock.y)) {
+        if (playerXIndex - 1 === rock.xCoords.indexOf(rock.x) &amp;&amp; playerYIndex === rock.yCoords.indexOf(rock.y)) {
             isRockLRDU[0] = true;
         }
-        if (playerXIndex + 1 === rock.xCoords.indexOf(rock.x) && playerYIndex === rock.yCoords.indexOf(rock.y)) {
+        if (playerXIndex + 1 === rock.xCoords.indexOf(rock.x) &amp;&amp; playerYIndex === rock.yCoords.indexOf(rock.y)) {
             isRockLRDU[1] = true;
         }
-        if (playerXIndex === rock.xCoords.indexOf(rock.x) && playerYIndex + 1 === rock.yCoords.indexOf(rock.y)) {
+        if (playerXIndex === rock.xCoords.indexOf(rock.x) &amp;&amp; playerYIndex + 1 === rock.yCoords.indexOf(rock.y)) {
             isRockLRDU[2] = true;
         }
-        if (playerXIndex === rock.xCoords.indexOf(rock.x) && playerYIndex - 1 === rock.yCoords.indexOf(rock.y)) {
+        if (playerXIndex === rock.xCoords.indexOf(rock.x) &amp;&amp; playerYIndex - 1 === rock.yCoords.indexOf(rock.y)) {
             isRockLRDU[3] = true;
         }
     });
@@ -576,8 +604,8 @@ function isRock(playerXIndex, playerYIndex) {
  */
 function overlap(array, objectIndex) {
     if (objectIndex > 0) {
-        for (var i = 0; i < objectIndex; i++) {
-            if (array[objectIndex].x === array[i].x && array[objectIndex].y === array[i].y) {
+        for (var i = 0; i &lt; objectIndex; i++) {
+            if (array[objectIndex].x === array[i].x &amp;&amp; array[objectIndex].y === array[i].y) {
                 return true;
             }
         }
@@ -596,7 +624,7 @@ function overlap(array, objectIndex) {
 function isGem(objectIndex) {
     var returnValue = false;
     allCollectibles.forEach(function(collectible) {
-        if (allRocks[objectIndex].xCoords.indexOf(allRocks[objectIndex].x) === collectible.xCoords.indexOf(collectible.x) &&
+        if (allRocks[objectIndex].xCoords.indexOf(allRocks[objectIndex].x) === collectible.xCoords.indexOf(collectible.x) &amp;&amp;
             allRocks[objectIndex].yCoords.indexOf(allRocks[objectIndex].y) === collectible.yCoords.indexOf(collectible.y)) {
             returnValue = true;
         }
@@ -622,13 +650,13 @@ var allRocks = [];
  *   - the player object into a variable called 'player'
  *   - the timer object into a variable called 'timer'
  */
-for (var i = 1; i <= 3; i++) {
+for (var i = 1; i &lt;= 3; i++) {
     allEnemies.push(new Enemy());
 }
-for (i = 1; i <= 2; i++) {
+for (i = 1; i &lt;= 2; i++) {
     allCollectibles.push(new Collectible);
 }
-for (i = 1; i <= 2; i++) {
+for (i = 1; i &lt;= 2; i++) {
     allRocks.push(new Rock);
 }
 var player = new Player();
@@ -648,4 +676,26 @@ document.addEventListener('keydown', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
-});
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Collectible.html">Collectible</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Player.html">Player</a></li><li><a href="Rock.html">Rock</a></li><li><a href="Timer.html">Timer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#displayPanel">displayPanel</a></li><li><a href="global.html#displayPanelOutline">displayPanelOutline</a></li><li><a href="global.html#isGem">isGem</a></li><li><a href="global.html#isRock">isRock</a></li><li><a href="global.html#overlap">overlap</a></li><li><a href="global.html#pauseFlag">pauseFlag</a></li><li><a href="global.html#random_number">random_number</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Feb 09 2016 14:04:38 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
