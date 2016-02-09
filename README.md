@@ -1,10 +1,10 @@
 Roach Panic v1.0
 ===============================
 
-1. How to run the game
+1. How to run the game:
     open index.html and follow the instructions
 
-2. How to play the game
+2. How to play the game:
     press 'enter' at the start screen, which displays the general game info-panel
     then select the player using the arrow keys and hit enter to start playing
     the goal of the game is to gather 200 points before 60 seconds have elapsed
