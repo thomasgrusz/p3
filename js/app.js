@@ -1,4 +1,3 @@
-
 /**
  *  @class
  *  Define Enemy class and corresponding prototype methods.
