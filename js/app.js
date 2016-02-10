@@ -1,3 +1,4 @@
+
 /**
  *  @class
  *  Define Enemy class and corresponding prototype methods.
@@ -170,7 +171,7 @@ Player.prototype.collisionDetect = function(collisionObject) {
     for (var j = 0; j <= 5; j++) {
         if (collisionObject.y === collisionObject.yCoords[j] && this.y === this.yCoords[j]) {
             if (collisionObject.x > this.x) {
-                if ((this.x + this.width -this.emptyPixelOffset) > collisionObject.x) {
+                if ((this.x + this.width - this.emptyPixelOffset) > collisionObject.x) {
                     collisionObject.collisionFlag = true;
                 }
             }
@@ -496,10 +497,9 @@ app.allRocks = [];
  *  @returns {number} Random number between lower and upper
  */
 app.random_number = function(lower, upper) {
-    if (lower === 0){
+    if (lower === 0) {
         return Math.floor(Math.random() * (upper + 1));
-    }
-    else {
+    } else {
         return lower + Math.floor(Math.random() * upper);
     }
 };
@@ -512,18 +512,18 @@ app.random_number = function(lower, upper) {
  *  @param {number} height - height of panel
  *  @param {number} fillColor - color of panel
  */
-app.displayPanel = function(x,y,width,height,fillColor) {
+app.displayPanel = function(x, y, width, height, fillColor) {
     ctx.fillStyle = fillColor;
     ctx.beginPath();
     ctx.moveTo(x, y);
-    ctx.lineTo(x+width,y);
-    ctx.quadraticCurveTo(x+width+10, y, x+width+10, y+10);
-    ctx.lineTo(x+width+10, y+height+10);
-    ctx.quadraticCurveTo(x+width+10, y+height+20, x+width, y+height+20);
-    ctx.lineTo(x, y+height+20);
-    ctx.quadraticCurveTo(x-10, y+height+20, x-10, y+height+10);
-    ctx.lineTo(x-10, y+10);
-    ctx.quadraticCurveTo(x-10, y, x, y);
+    ctx.lineTo(x + width, y);
+    ctx.quadraticCurveTo(x + width + 10, y, x + width + 10, y + 10);
+    ctx.lineTo(x + width + 10, y + height + 10);
+    ctx.quadraticCurveTo(x + width + 10, y + height + 20, x + width, y + height + 20);
+    ctx.lineTo(x, y + height + 20);
+    ctx.quadraticCurveTo(x - 10, y + height + 20, x - 10, y + height + 10);
+    ctx.lineTo(x - 10, y + 10);
+    ctx.quadraticCurveTo(x - 10, y, x, y);
     ctx.fill();
 };
 
@@ -535,19 +535,19 @@ app.displayPanel = function(x,y,width,height,fillColor) {
  *  @param {number} height - height of outline
  *  @param {number} outlineColor - color of outline
  */
-app.displayPanelOutline = function(x,y,width,height,outlineColor) {
+app.displayPanelOutline = function(x, y, width, height, outlineColor) {
     ctx.lineWidth = 5;
     ctx.strokeStyle = outlineColor;
     ctx.beginPath();
     ctx.moveTo(x, y);
-    ctx.lineTo(x+width,y);
-    ctx.quadraticCurveTo(x+width+10, y, x+width+10, y+10);
-    ctx.lineTo(x+width+10, y+height+10);
-    ctx.quadraticCurveTo(x+width+10, y+height+20, x+width, y+height+20);
-    ctx.lineTo(x, y+height+20);
-    ctx.quadraticCurveTo(x-10, y+height+20, x-10, y+height+10);
-    ctx.lineTo(x-10, y+10);
-    ctx.quadraticCurveTo(x-10, y, x, y);
+    ctx.lineTo(x + width, y);
+    ctx.quadraticCurveTo(x + width + 10, y, x + width + 10, y + 10);
+    ctx.lineTo(x + width + 10, y + height + 10);
+    ctx.quadraticCurveTo(x + width + 10, y + height + 20, x + width, y + height + 20);
+    ctx.lineTo(x, y + height + 20);
+    ctx.quadraticCurveTo(x - 10, y + height + 20, x - 10, y + height + 10);
+    ctx.lineTo(x - 10, y + 10);
+    ctx.quadraticCurveTo(x - 10, y, x, y);
     ctx.stroke();
 };
 
