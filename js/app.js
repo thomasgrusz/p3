@@ -10,6 +10,8 @@
  */
 var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
+    this.minXCoord = -100;
+    this.maxXCoord = 505;
     this.yCoords = [-23, 60, 143, 226, 309, 392];
     this.width = 101;
 };
@@ -21,7 +23,7 @@ var Enemy = function() {
  *  app.js and the reset() function in engine.js.
  */
 Enemy.prototype.reset = function() {
-    this.x = -100;
+    this.x = this.minXCoord;
     this.y = this.yCoords[random_number(1, 3)];
     this.speed = random_number(100, 400);
     this.collisionFlag = false;
@@ -38,7 +40,7 @@ Enemy.prototype.reset = function() {
  *  @param {number} dt - Speed equalizer across devices
  */
 Enemy.prototype.update = function(dt) {
-    if (this.x < 505) {
+    if (this.x < this.maxXCoord) {
         this.x = this.x + (this.speed * dt);
     } else {
         this.reset();
@@ -109,8 +111,8 @@ var Player = function() {
  *  This function is called by the reset() function in engine.js.
  */
 Player.prototype.reset = function() {
-    this.x = player.xOrigin;
-    this.y = player.yOrigin;
+    this.x = this.xOrigin;
+    this.y = this.yOrigin;
     this.lives = 3;
     this.alive = true;
     this.score = 0;
@@ -131,10 +133,10 @@ Player.prototype.update = function() {
     if (this.lives <= 0) {
         this.alive = false;
     }
-    if (this.y < player.waterBorder) {
-        this.x = player.xOrigin;
-        this.y = player.yOrigin;
-        player.score += 10;
+    if (this.y < this.waterBorder) {
+        this.x = this.xOrigin;
+        this.y = this.yOrigin;
+        this.score += 10;
     }
 };
 
@@ -147,7 +149,7 @@ Player.prototype.update = function() {
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     for (var i = 1; i <= this.lives; i++) {
-        ctx.drawImage(Resources.get('images/Heart.png'), -30+i*40, 525);
+        ctx.drawImage(Resources.get('images/Heart.png'), -30 + i * 40, 525);
     }
 };
 
@@ -165,8 +167,8 @@ Player.prototype.render = function() {
  *  @param {object} collisionObject - Object to check player-collision against
  */
 Player.prototype.collisionDetect = function(collisionObject) {
-    for (var j = 0; j<= 5; j++) {
-        if (collisionObject.y === collisionObject.yCoords[j] && player.y === this.yCoords[j]) {
+    for (var j = 0; j <= 5; j++) {
+        if (collisionObject.y === collisionObject.yCoords[j] && this.y === this.yCoords[j]) {
             if (collisionObject.x > this.x) {
                 if ((this.x + this.width -this.emptyPixelOffset) > collisionObject.x) {
                     collisionObject.collisionFlag = true;
@@ -223,20 +225,20 @@ Player.prototype.handleInput = function(keyInput) {
      *  is set to true, so the game can start. characterSelectedFlag is tested also tested for
      *  in the main() game-loop in engin.js.
      */
-    if (player.characterSelectedFlag === false && player.startScreenDisplay === false) {
-        if (keyInput === 'left' && player.selectorBox > 0) {
-            player.selectorBox = player.selectorBox - 1;
-        } else if (keyInput === 'left' && player.selectorBox === 0) {
-            player.selectorBox = 4;
+    if (this.characterSelectedFlag === false && this.startScreenDisplay === false) {
+        if (keyInput === 'left' && this.selectorBox > 0) {
+            this.selectorBox = this.selectorBox - 1;
+        } else if (keyInput === 'left' && this.selectorBox === 0) {
+            this.selectorBox = 4;
         }
-        if (keyInput === 'right' && player.selectorBox < 4) {
-            player.selectorBox = player.selectorBox + 1;
-        } else if (keyInput === 'right' && player.selectorBox === 4) {
-            player.selectorBox = 0;
+        if (keyInput === 'right' && this.selectorBox < 4) {
+            this.selectorBox = this.selectorBox + 1;
+        } else if (keyInput === 'right' && this.selectorBox === 4) {
+            this.selectorBox = 0;
         }
         if (keyInput === 'return') {
-            player.characterSelectedFlag = true;
-            player.sprite = player.characters[player.selectorBox];
+            this.characterSelectedFlag = true;
+            this.sprite = this.characters[this.selectorBox];
         }
     }
 
@@ -244,17 +246,17 @@ Player.prototype.handleInput = function(keyInput) {
      *  Check for return-key at the Game-Over or Game-Won screens to start a new game.
      *  anotherGameFlag is tested for in the gameOver() and gameWon() functions in engine.js.
      */
-    if (keyInput === 'return' && (player.alive === false || player.gameWon === true)) {
-        player.anotherGameFlag = true;
+    if (keyInput === 'return' && (this.alive === false || this.gameWon === true)) {
+        this.anotherGameFlag = true;
     }
 
     /**
      *  Check if spacebar is pressed to pause an active game.
      */
     if (keyInput === 'space' &&
-        player.characterSelectedFlag === true &&
-        player.alive === true &&
-        player.gameWon === false) {
+        this.characterSelectedFlag === true &&
+        this.alive === true &&
+        this.gameWon === false) {
         pauseFlag = !pauseFlag;
     }
 
@@ -263,7 +265,7 @@ Player.prototype.handleInput = function(keyInput) {
      *  and move player object accordingly accross canvas. The function also
      *  checks if there are rocks around the player which prevent movement.
      */
-    if (player.characterSelectedFlag === true && pauseFlag === false) {
+    if (this.characterSelectedFlag === true && pauseFlag === false) {
         /**
          *  The isRockLRDU array contains 4 boolean variables indicating if
          *  there are rocks on the Left, Right, Down and Up of the player in
@@ -275,13 +277,13 @@ Player.prototype.handleInput = function(keyInput) {
          *  The player is moved by increasing or decreasing the index pointing to the actual
          *  x- and y-coordinates in the player.xCoords and player.yCoords array.
          */
-        if (keyInput === 'left' && this.x > player.leftBorder && !isRockLRDU[0]) {
+        if (keyInput === 'left' && this.x > this.leftBorder && !isRockLRDU[0]) {
             this.x = this.xCoords[this.xCoords.indexOf(this.x) - 1];
-        } else if (keyInput === 'right' && this.x < player.rightBorder && !isRockLRDU[1]) {
+        } else if (keyInput === 'right' && this.x < this.rightBorder && !isRockLRDU[1]) {
             this.x = this.xCoords[this.xCoords.indexOf(this.x) + 1];
-        } else if (keyInput === 'down' && this.y < player.lowerBorder && !isRockLRDU[2]) {
+        } else if (keyInput === 'down' && this.y < this.lowerBorder && !isRockLRDU[2]) {
             this.y = this.yCoords[this.yCoords.indexOf(this.y) + 1];
-        } else if (keyInput === 'up' && this.y > player.upperBorder && !isRockLRDU[3]) {
+        } else if (keyInput === 'up' && this.y > this.upperBorder && !isRockLRDU[3]) {
             this.y = this.yCoords[this.yCoords.indexOf(this.y) - 1];
         }
     }
@@ -606,7 +608,7 @@ function isGem(objectIndex) {
 
 /**
  *
- *   Define global variables
+ *   Define 'global' variables within global object app
  *
  */
 var pauseFlag;
