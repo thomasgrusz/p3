@@ -65,7 +65,7 @@ var Engine = (function(global) {
             selectPlayer();
         }
 
-        if (pauseFlag === false && player.characterSelectedFlag === true && player.alive === true && player.gameWon === false) {
+        if (app.pauseFlag === false && player.characterSelectedFlag === true && player.alive === true && player.gameWon === false) {
             update(dt);
             render();
         }
@@ -116,10 +116,10 @@ var Engine = (function(global) {
      * player object.
      */
     function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
+        app.allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        allCollectibles.forEach(function(collectible) {
+        app.allCollectibles.forEach(function(collectible) {
             collectible.update();
         });
         player.update();
@@ -129,10 +129,10 @@ var Engine = (function(global) {
 
         /* Check collisions between player and all enemies and collectibles.
          */
-        allEnemies.forEach(function(enemy) {
+        app.allEnemies.forEach(function(enemy) {
             player.collisionDetect(enemy);
         });
-        allCollectibles.forEach(function(collectible) {
+        app.allCollectibles.forEach(function(collectible) {
             player.collisionDetect(collectible);
         });
     }
@@ -187,16 +187,16 @@ var Engine = (function(global) {
      * for collectibles, rocks, enemies, score and timer.
      */
     function renderEntities() {
-        /* Loop through all of the objects within the allEnemies array and call
+        /* Loop through all of the objects within the app.allEnemies array and call
          * the render function you have defined.
          */
-        allCollectibles.forEach(function(collectible) {
+        app.allCollectibles.forEach(function(collectible) {
             collectible.render();
         });
-        allRocks.forEach(function(rock) {
+        app.allRocks.forEach(function(rock) {
             rock.render();
         });
-        allEnemies.forEach(function(enemy) {
+        app.allEnemies.forEach(function(enemy) {
             enemy.render();
         });
         player.render();
@@ -210,18 +210,18 @@ var Engine = (function(global) {
      * has been pressed (in app.js player.handleInput method).
      */
     function reset() {
-        allEnemies.forEach(function(enemy){
+        app.allEnemies.forEach(function(enemy){
             enemy.reset();
         });
-        allCollectibles.forEach(function(collectible) {
+        app.allCollectibles.forEach(function(collectible) {
             collectible.reset();
         });
-        allRocks.forEach(function(rock) {
+        app.allRocks.forEach(function(rock) {
             rock.reset();
         });
         player.reset();
         timer.reset();
-        pauseFlag = false;
+        app.pauseFlag = false;
     }
 
     /* This function is called only once by the main() function and draws a

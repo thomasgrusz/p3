@@ -257,7 +257,7 @@ Player.prototype.handleInput = function(keyInput) {
         this.characterSelectedFlag === true &&
         this.alive === true &&
         this.gameWon === false) {
-        pauseFlag = !pauseFlag;
+        app.pauseFlag = !app.pauseFlag;
     }
 
     /**
@@ -265,7 +265,7 @@ Player.prototype.handleInput = function(keyInput) {
      *  and move player object accordingly accross canvas. The function also
      *  checks if there are rocks around the player which prevent movement.
      */
-    if (this.characterSelectedFlag === true && pauseFlag === false) {
+    if (this.characterSelectedFlag === true && app.pauseFlag === false) {
         /**
          *  The isRockLRDU array contains 4 boolean variables indicating if
          *  there are rocks on the Left, Right, Down and Up of the player in
@@ -314,7 +314,7 @@ var Collectible = function() {
  *  Reset a collectible object by placing it randomly on the screen except for
  *  the player's start position and set its collisionFlag to false.
  *  The function also checks for already placed collectibles in the
- *  global 'allCollectibles' array and avoids overlap by calling overlap().
+ *  global 'app.allCollectibles' array and avoids overlap by calling overlap().
  *  The collectible image is randomly chosen from the collectible.collectibles array.
  *  collisionFlag is tested against in enemy.update() and collectibles.update() methods.
  *  This function is called by the reset() function in engine.js.
@@ -324,7 +324,7 @@ Collectible.prototype.reset = function() {
         this.x = this.xCoords[random_number(0, 4)];
         this.y = this.yCoords[random_number(1, 5)];
     }
-    while (this.x === 227 && this.y === 449 || overlap(allCollectibles, allCollectibles.indexOf(this)));
+    while (this.x === 227 && this.y === 449 || overlap(app.allCollectibles, app.allCollectibles.indexOf(this)));
     this.randomCollectible = this.collectibles[random_number(0, 2)];
     this.collisionFlag = false;
 };
@@ -383,7 +383,7 @@ var Rock = function() {
  *  Reset a rock object by placing it randomly on the screen except for
  *  the player's start position.
  *  The function also checks for already placed rocks and gems in the global
- *  'allRocks' and 'allCollectibles' arrays and avoids overlap by calling overlap() and isGem().
+ *  'app.allRocks' and 'app.allCollectibles' arrays and avoids overlap by calling overlap() and isGem().
  *  This function is called by the reset() function in engine.js.
  */
 Rock.prototype.reset = function() {
@@ -391,7 +391,7 @@ Rock.prototype.reset = function() {
         this.x = this.xCoords[random_number(0, 4)];
         this.y = this.yCoords[random_number(1, 5)];
     }
-    while (this.x === 201 && this.y === 392 || overlap(allRocks, allRocks.indexOf(this)) || isGem(allRocks.indexOf(this)));
+    while (this.x === 201 && this.y === 392 || overlap(app.allRocks, app.allRocks.indexOf(this)) || isGem(app.allRocks.indexOf(this)));
 };
 
 /**
@@ -551,7 +551,7 @@ function displayPanelOutline(x,y,width,height,outlineColor) {
  */
 function isRock(playerXIndex, playerYIndex) {
     var isRockLRDU = [false, false, false, false];
-    allRocks.forEach(function(rock) {
+    app.allRocks.forEach(function(rock) {
         if (playerXIndex - 1 === rock.xCoords.indexOf(rock.x) && playerYIndex === rock.yCoords.indexOf(rock.y)) {
             isRockLRDU[0] = true;
         }
@@ -589,7 +589,7 @@ function overlap(array, objectIndex) {
 
 /**
  *  Check if there is an overlap between a rock that wants to be placed and
- *  all existing collectibles on the screen (allCollectibles array).
+ *  all existing collectibles on the screen (app.allCollectibles array).
  *  The function returns the value true if there is an overlap.
  *  This function is called by the rock.reset() method in app.js.
  *  @param {number} objectIndex - index of the object in array to test overlap against
@@ -597,9 +597,9 @@ function overlap(array, objectIndex) {
  */
 function isGem(objectIndex) {
     var returnValue = false;
-    allCollectibles.forEach(function(collectible) {
-        if (allRocks[objectIndex].xCoords.indexOf(allRocks[objectIndex].x) === collectible.xCoords.indexOf(collectible.x) &&
-            allRocks[objectIndex].yCoords.indexOf(allRocks[objectIndex].y) === collectible.yCoords.indexOf(collectible.y)) {
+    app.allCollectibles.forEach(function(collectible) {
+        if (app.allRocks[objectIndex].xCoords.indexOf(app.allRocks[objectIndex].x) === collectible.xCoords.indexOf(collectible.x) &&
+            app.allRocks[objectIndex].yCoords.indexOf(app.allRocks[objectIndex].y) === collectible.yCoords.indexOf(collectible.y)) {
             returnValue = true;
         }
     });
@@ -611,27 +611,29 @@ function isGem(objectIndex) {
  *   Define 'global' variables within global object app
  *
  */
-var pauseFlag;
-var allEnemies = [];
-var allCollectibles = [];
-var allRocks = [];
+var app = {};
+
+app.pauseFlag;
+app.allEnemies = [];
+app.allCollectibles = [];
+app.allRocks = [];
 
 /**
  *   Instantiate entities by placing
- *   - all enemies into an array called 'allEnemies',
- *   - all collectibles into an array called 'allCollectibles',
- *   - all rocks into an array called 'allRocks',
+ *   - all enemies into an array called 'app.allEnemies',
+ *   - all collectibles into an array called 'app.allCollectibles',
+ *   - all rocks into an array called 'app.allRocks',
  *   - the player object into a variable called 'player'
  *   - the timer object into a variable called 'timer'
  */
 for (var i = 1; i <= 3; i++) {
-    allEnemies.push(new Enemy());
+    app.allEnemies.push(new Enemy());
 }
 for (i = 1; i <= 2; i++) {
-    allCollectibles.push(new Collectible);
+    app.allCollectibles.push(new Collectible);
 }
 for (i = 1; i <= 2; i++) {
-    allRocks.push(new Rock);
+    app.allRocks.push(new Rock);
 }
 var player = new Player();
 var timer = new Timer();
