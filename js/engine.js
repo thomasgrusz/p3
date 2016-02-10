@@ -236,8 +236,8 @@ var Engine = (function(global) {
         renderBackground();
         /* Draw white background panel with green outline
          */
-         displayPanel(30, 200, 445, 210, 'white');
-         displayPanelOutline(30, 200, 445, 210, 'green');
+         app.displayPanel(30, 200, 445, 210, 'white');
+         app.displayPanelOutline(30, 200, 445, 210, 'green');
         /* Draw player characters
          */
         for (var i = 0; i < player.characters.length; i++) {
@@ -248,7 +248,7 @@ var Engine = (function(global) {
         ctx.font = '20pt Lobster';
         ctx.fillStyle = 'green';
         ctx.fillText('select your hero and press ENTER!', 75, 400);
-        displayPanelOutline(player.selectorBoxXCoords[player.selectorBox], 220, 63, 110, 'lightgreen');
+        app.displayPanelOutline(player.selectorBoxXCoords[player.selectorBox], 220, 63, 110, 'lightgreen');
     }
 
     /* This function is called by the main() function only once and displays
@@ -259,8 +259,8 @@ var Engine = (function(global) {
      */
     function startScreen() {
         renderBackground();
-        displayPanel(30, 120, 445, 380, 'white');
-        displayPanelOutline(30, 120, 445, 380, 'green');
+        app.displayPanel(30, 120, 445, 380, 'white');
+        app.displayPanelOutline(30, 120, 445, 380, 'green');
         ctx.font = '32pt Lobster';
         ctx.fillStyle = 'green';
         ctx.fillText('GAME INFO', 140, 200);
@@ -290,8 +290,8 @@ var Engine = (function(global) {
     function gameOver() {
         renderBackground();
         player.renderScore();
-        displayPanel(30, 200, 445, 210, 'white');
-        displayPanelOutline(30, 200, 445, 210, 'green');
+        app.displayPanel(30, 200, 445, 210, 'white');
+        app.displayPanelOutline(30, 200, 445, 210, 'green');
         ctx.font = '30pt Lobster';
         ctx.fillStyle = 'green';
         ctx.fillText('GAME OVER!', 140, 300);
@@ -312,8 +312,8 @@ var Engine = (function(global) {
     function gameWon() {
         renderBackground();
         timer.render();
-        displayPanel(30, 200, 445, 210, 'white');
-        displayPanelOutline(30, 200, 445, 210, 'green');
+        app.displayPanel(30, 200, 445, 210, 'white');
+        app.displayPanelOutline(30, 200, 445, 210, 'green');
         ctx.font = '30pt Lobster';
         ctx.fillStyle = 'red';
         ctx.fillText('YOU ARE A WINNER!', 70, 300);

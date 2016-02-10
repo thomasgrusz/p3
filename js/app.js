@@ -24,8 +24,8 @@ var Enemy = function() {
  */
 Enemy.prototype.reset = function() {
     this.x = this.minXCoord;
-    this.y = this.yCoords[random_number(1, 3)];
-    this.speed = random_number(100, 400);
+    this.y = this.yCoords[app.random_number(1, 3)];
+    this.speed = app.random_number(100, 400);
     this.collisionFlag = false;
 };
 
@@ -192,7 +192,7 @@ Player.prototype.collisionDetect = function(collisionObject) {
  *  in engine.js.
  */
 Player.prototype.renderScore = function() {
-    displayPanel(290, 545, 190, 20, 'lightgreen');
+    app.displayPanel(290, 545, 190, 20, 'lightgreen');
     ctx.font = '32pt Lobster';
     ctx.fillStyle = 'green';
     ctx.fillText('Score: ', 290, 580);
@@ -269,9 +269,9 @@ Player.prototype.handleInput = function(keyInput) {
         /**
          *  The isRockLRDU array contains 4 boolean variables indicating if
          *  there are rocks on the Left, Right, Down and Up of the player in
-         *  that order. The array is loaded by calling isRock().
+         *  that order. The array is loaded by calling app.isRock().
          */
-        var isRockLRDU = isRock(this.xCoords.indexOf(this.x), this.yCoords.indexOf(this.y));
+        var isRockLRDU = app.isRock(this.xCoords.indexOf(this.x), this.yCoords.indexOf(this.y));
 
         /**
          *  The player is moved by increasing or decreasing the index pointing to the actual
@@ -314,18 +314,18 @@ var Collectible = function() {
  *  Reset a collectible object by placing it randomly on the screen except for
  *  the player's start position and set its collisionFlag to false.
  *  The function also checks for already placed collectibles in the
- *  global 'app.allCollectibles' array and avoids overlap by calling overlap().
+ *  global 'app.allCollectibles' array and avoids overlap by calling app.overlap().
  *  The collectible image is randomly chosen from the collectible.collectibles array.
  *  collisionFlag is tested against in enemy.update() and collectibles.update() methods.
  *  This function is called by the reset() function in engine.js.
  */
 Collectible.prototype.reset = function() {
     do {
-        this.x = this.xCoords[random_number(0, 4)];
-        this.y = this.yCoords[random_number(1, 5)];
+        this.x = this.xCoords[app.random_number(0, 4)];
+        this.y = this.yCoords[app.random_number(1, 5)];
     }
-    while (this.x === 227 && this.y === 449 || overlap(app.allCollectibles, app.allCollectibles.indexOf(this)));
-    this.randomCollectible = this.collectibles[random_number(0, 2)];
+    while (this.x === 227 && this.y === 449 || app.overlap(app.allCollectibles, app.allCollectibles.indexOf(this)));
+    this.randomCollectible = this.collectibles[app.random_number(0, 2)];
     this.collisionFlag = false;
 };
 
@@ -383,15 +383,15 @@ var Rock = function() {
  *  Reset a rock object by placing it randomly on the screen except for
  *  the player's start position.
  *  The function also checks for already placed rocks and gems in the global
- *  'app.allRocks' and 'app.allCollectibles' arrays and avoids overlap by calling overlap() and isGem().
+ *  'app.allRocks' and 'app.allCollectibles' arrays and avoids overlap by calling app.overlap() and app.isGem().
  *  This function is called by the reset() function in engine.js.
  */
 Rock.prototype.reset = function() {
     do {
-        this.x = this.xCoords[random_number(0, 4)];
-        this.y = this.yCoords[random_number(1, 5)];
+        this.x = this.xCoords[app.random_number(0, 4)];
+        this.y = this.yCoords[app.random_number(1, 5)];
     }
-    while (this.x === 201 && this.y === 392 || overlap(app.allRocks, app.allRocks.indexOf(this)) || isGem(app.allRocks.indexOf(this)));
+    while (this.x === 201 && this.y === 392 || app.overlap(app.allRocks, app.allRocks.indexOf(this)) || app.isGem(app.allRocks.indexOf(this)));
 };
 
 /**
@@ -465,12 +465,23 @@ Timer.prototype.update = function() {
  *  This function is called by the renderEntities() function in engine.js.
  */
 Timer.prototype.render = function() {
-    displayPanel(this.xPanel, this.yPanel, this.width, this.height, 'lightblue');
+    app.displayPanel(this.xPanel, this.yPanel, this.width, this.height, 'lightblue');
     ctx.font = '32pt Lobster';
     ctx.fillStyle = 'blue';
     ctx.fillText('Timer: ', this.xText, this.yText);
     ctx.fillText(timer.time, this.xTime, this.yTime);
 };
+
+/**
+ *
+ *   Define 'global' variables and helper functions within global object app
+ *
+ */
+var app = {};
+app.pauseFlag;
+app.allEnemies = [];
+app.allCollectibles = [];
+app.allRocks = [];
 
 /*
  *
@@ -484,14 +495,14 @@ Timer.prototype.render = function() {
  *  @param {number} upper - Upper number of range in which to set a random number in
  *  @returns {number} Random number between lower and upper
  */
-function random_number(lower, upper) {
+app.random_number = function(lower, upper) {
     if (lower === 0){
         return Math.floor(Math.random() * (upper + 1));
     }
     else {
         return lower + Math.floor(Math.random() * upper);
     }
-}
+};
 
 /**
  *  Display a panel with rounded corners on the canvas.
@@ -501,7 +512,7 @@ function random_number(lower, upper) {
  *  @param {number} height - height of panel
  *  @param {number} fillColor - color of panel
  */
-function displayPanel(x,y,width,height,fillColor) {
+app.displayPanel = function(x,y,width,height,fillColor) {
     ctx.fillStyle = fillColor;
     ctx.beginPath();
     ctx.moveTo(x, y);
@@ -514,7 +525,7 @@ function displayPanel(x,y,width,height,fillColor) {
     ctx.lineTo(x-10, y+10);
     ctx.quadraticCurveTo(x-10, y, x, y);
     ctx.fill();
-}
+};
 
 /**
  *  Display a panel-outline with rounded corners on the canvas.
@@ -524,7 +535,7 @@ function displayPanel(x,y,width,height,fillColor) {
  *  @param {number} height - height of outline
  *  @param {number} outlineColor - color of outline
  */
-function displayPanelOutline(x,y,width,height,outlineColor) {
+app.displayPanelOutline = function(x,y,width,height,outlineColor) {
     ctx.lineWidth = 5;
     ctx.strokeStyle = outlineColor;
     ctx.beginPath();
@@ -538,7 +549,7 @@ function displayPanelOutline(x,y,width,height,outlineColor) {
     ctx.lineTo(x-10, y+10);
     ctx.quadraticCurveTo(x-10, y, x, y);
     ctx.stroke();
-}
+};
 
 /**
  *  Check if there is a rock left, right, down or up of player's current position.
@@ -549,7 +560,7 @@ function displayPanelOutline(x,y,width,height,outlineColor) {
  *  @param {number} playerYIndex - index for players y-coordinate in player.yCoords array
  *  @returns {array} isRockLRDU
  */
-function isRock(playerXIndex, playerYIndex) {
+app.isRock = function(playerXIndex, playerYIndex) {
     var isRockLRDU = [false, false, false, false];
     app.allRocks.forEach(function(rock) {
         if (playerXIndex - 1 === rock.xCoords.indexOf(rock.x) && playerYIndex === rock.yCoords.indexOf(rock.y)) {
@@ -566,7 +577,7 @@ function isRock(playerXIndex, playerYIndex) {
         }
     });
     return isRockLRDU;
-}
+};
 
 /**
  *  Check if there is an overlap between an array's object and the other elements
@@ -576,7 +587,7 @@ function isRock(playerXIndex, playerYIndex) {
  *  @param {number} objectIndex - index of the object in array to test overlap against
  *  @returns {boolean}
  */
-function overlap(array, objectIndex) {
+app.overlap = function(array, objectIndex) {
     if (objectIndex > 0) {
         for (var i = 0; i < objectIndex; i++) {
             if (array[objectIndex].x === array[i].x && array[objectIndex].y === array[i].y) {
@@ -585,7 +596,7 @@ function overlap(array, objectIndex) {
         }
     }
     return false;
-}
+};
 
 /**
  *  Check if there is an overlap between a rock that wants to be placed and
@@ -595,7 +606,7 @@ function overlap(array, objectIndex) {
  *  @param {number} objectIndex - index of the object in array to test overlap against
  *  @returns {boolean}
  */
-function isGem(objectIndex) {
+app.isGem = function(objectIndex) {
     var returnValue = false;
     app.allCollectibles.forEach(function(collectible) {
         if (app.allRocks[objectIndex].xCoords.indexOf(app.allRocks[objectIndex].x) === collectible.xCoords.indexOf(collectible.x) &&
@@ -604,19 +615,7 @@ function isGem(objectIndex) {
         }
     });
     return returnValue;
-}
-
-/**
- *
- *   Define 'global' variables within global object app
- *
- */
-var app = {};
-
-app.pauseFlag;
-app.allEnemies = [];
-app.allCollectibles = [];
-app.allRocks = [];
+};
 
 /**
  *   Instantiate entities by placing
