@@ -448,7 +448,7 @@ Timer.prototype.reset = function() {
  *  timer.reset() method.
  */
 Timer.prototype.update = function() {
-    if (player.characterSelectedFlag && player.alive && timer.time > 0) {
+    if (player.characterSelectedFlag && player.alive && app.pauseFlag === false && timer.time > 0) {
         timer.time--;
     }
     if (timer.time <= 0 && player.score < 200) {
