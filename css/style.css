@@ -14,3 +14,20 @@ h2 {
     font-family: 'Lobster', cursive;
     font-size: 42px;
 }
+
+#author {
+    color: yellow;
+    font-family: 'Lobster', cursive;
+}
+
+#github a {
+    color: yellow;
+    font-family: 'Lobster', cursive;
+    text-decoration: none;
+}
+
+#github a span{
+    color: yellow;
+    text-decoration: none;
+    padding-right: 0.5rem;
+}
