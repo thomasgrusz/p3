@@ -288,10 +288,13 @@ var Engine = (function (global) {
     ctx.fillText("press return to start!", 150, 480);
     if (player.startFirstGame === true) {
       player.startScreenDisplay = false;
-      var node = doc.createElement("H2");
-      var textnode = doc.createTextNode('press "space" to pause game');
+
+      const footer = doc.querySelector("footer");
+      footer.innerHTML = "";
+      const node = doc.createElement("h4");
+      const textnode = doc.createTextNode("press SPACE to pause game");
       node.appendChild(textnode);
-      doc.getElementById("gameCanvas").appendChild(node);
+      footer.appendChild(node);
       init();
     }
   }
