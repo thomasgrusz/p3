@@ -1,106 +1,83 @@
-/*eslint-env node */
+const gulp = require("gulp");
+const htmlmin = require("gulp-htmlmin");
+const terser = require("gulp-terser");
+const rename = require("gulp-rename");
+const del = require("del");
+// const babel = require("gulp-babel");
 
-var gulp = require('gulp');
-var browserSync = require('browser-sync').create();
-var eslint = require('gulp-eslint');
-var plumber = require('gulp-plumber');
-//var sass = require('gulp-sass');
-//var autoprefixer = require('gulp-autoprefixer');
-//var concat = require('gulp-concat');
-//var uglify = require('gulp-uglify');
-//var rename = require('gulp-rename');
-//var sourcemaps = require('gulp-sourcemaps');
-//var htmlmin = require('gulp-htmlmin');
+// Clean the "docs" folder
+function clean() {
+  return del(["docs"]);
+}
 
-gulp.task('default', function() {
-    gulp.watch('./js/**/*.js', ['lint']).on('change', browserSync.reload);
-    gulp.watch('./index.html').on('change', browserSync.reload);
+// Minify HTML files
+function minifyHTML() {
+  return gulp
+    .src("src/index.html")
+    .pipe(htmlmin({ collapseWhitespace: true, removeComments: true }))
+    .pipe(gulp.dest("docs"));
+}
 
-    browserSync.init({
-        server: './'
-    });
-});
+// Minify JS files
+function minifyJS() {
+  return (
+    gulp
+      .src("src/js/*.js")
+      .pipe(terser())
+      // .pipe(rename({ suffix: '.min' }))
+      .pipe(gulp.dest("docs/js"))
+  );
+}
 
-gulp.task('lint', function () {
-    return gulp.src(['./js/**/*.js'])
-    .pipe(plumber({
-        errorHandler: function (err) {
-            console.log(err); // eslint-disable-line
-            this.emit('end');
-        }
-    }))
-        // eslint() attaches the lint output to the eslint property
-        // of the file object so it can be used by other modules.
-        .pipe(eslint())
-        // eslint.format() outputs the lint results to the console.
-        // Alternatively use eslint.formatEach() (see Docs).
-        .pipe(eslint.format())
-        // To have the process exit with an error code (1) on
-        // lint error, return the stream and pipe to failOnError last.
-        .pipe(eslint.failOnError());
-});
+// // Transpile and Minify JS files using Babel
+// function transpileJS() {
+//   return gulp
+//     .src("src/js/*.js")
+//     .pipe(
+//       babel({
+//         presets: ["@babel/preset-env"],
+//       })
+//     )
+//     .pipe(terser())
+//     .pipe(gulp.dest("docs/js"));
+// }
 
-// gulp.task('default', ['copy-html', 'copy-images', 'styles', 'lint', 'scripts'], function() {
-//  //gulp.watch('./sass/**/*.scss', ['styles']);
-//  gulp.watch('./js/**/*.js', ['lint', 'scripts']).on('change', browserSync.reload);
-//  gulp.watch('./index.html', ['copy-html']);
-//  gulp.watch('./dist/index.html').on('change', browserSync.reload);
+// Import gulp-autoprefixer using dynamic import
+async function processCSS() {
+  const autoprefixer = await import("gulp-autoprefixer");
+  return gulp
+    .src("src/css/*.css")
+    .pipe(autoprefixer.default())
+    .pipe(gulp.dest("docs/css"));
+}
 
-//  browserSync.init({
-//      server: './dist'
-//  });
-// });
+// Copy contents of 'static' folder to 'docs'
+function copyStatic() {
+  return gulp
+    .src("src/static/**/*", { dot: true }) // '**/*' selects all files and subdirectories
+    .pipe(gulp.dest("docs"));
+}
 
-// gulp.task('dist', [
-//  'copy-html',
-//  'copy-images',
-//  'styles',
-//  'lint',
-//  'scripts-dist'
-// ],
-    
-//  function(){
-//      browserSync.init({
-//          server: './dist'
-//      });
-//  }
-// );
+// Watch for changes (optional)
+function watch() {
+  gulp.watch("src/index.html", minifyHTML);
+  gulp.watch("src/js/*.js", minifyJS);
+  // gulp.watch("src/js/*.js", transpileJS);
+  gulp.watch("src/css/*.css", processCSS);
+  gulp.watch("static/**/*", copyStatic);
+}
 
-// gulp.task('copy-html', function() {
-//  gulp.src('./index.html')
-//      .pipe(htmlmin({collapseWhitespace: true}))
-//      .pipe(gulp.dest('./dist'));
-// });
+// Define a default task
+exports.default = gulp.series(
+  clean,
+  gulp.parallel(minifyHTML, minifyJS, processCSS, copyStatic),
+  // gulp.parallel(minifyHTML, transpileJS, processCSS, copyStatic),
+  watch
+);
 
-// gulp.task('copy-images', function() {
-//  gulp.src('./img/*.*')
-//      .pipe(gulp.dest('./dist/img'));
-// });
-
-// gulp.task('styles', function() {
-//  gulp.src('sass/**/*.scss')
-//      .pipe(sourcemaps.init())
-//      .pipe(sass({
-//          outputStyle: 'compressed'
-//      }).on('error', sass.logError))
-//      .pipe(autoprefixer({
-//          browsers: ['last 2 versions']
-//      }))
-//      .pipe(sourcemaps.write())
-//      .pipe(gulp.dest('./dist/css'))
-//      .pipe(browserSync.stream());
-// });
-
-
-// gulp.task('scripts', function() {
-// 	gulp.src('./js/**/*.js')
-// 		.pipe(concat('all.js'))
-// 		.pipe(gulp.dest('./dist/js'));
-// });
-
-// gulp.task('scripts-dist', function() {
-// 	gulp.src('./js/**/*.js')
-// 		.pipe(concat('all.js'))
-// 		.pipe(uglify())
-// 		.pipe(gulp.dest('./dist/js'));
-// });
+exports.clean = clean;
+exports.minifyHTML = minifyHTML;
+exports.minifyJS = minifyJS;
+// exports.transpileJS = transpileJS;
+exports.processCSS = processCSS;
+exports.copyStatic = copyStatic;
