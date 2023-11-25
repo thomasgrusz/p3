@@ -26,7 +26,8 @@ var Engine = (function (global) {
 
   canvas.width = 505;
   canvas.height = 606;
-  doc.body.appendChild(canvas);
+  // doc.body.appendChild(canvas);
+  doc.querySelector("#gameCanvas").appendChild(canvas);
 
   /* This function serves as the kickoff point for the game loop itself
    * and handles properly calling the update and render methods.
@@ -290,7 +291,7 @@ var Engine = (function (global) {
       var node = doc.createElement("H2");
       var textnode = doc.createTextNode('press "space" to pause game');
       node.appendChild(textnode);
-      doc.getElementById("body").appendChild(node);
+      doc.getElementById("gameCanvas").appendChild(node);
       init();
     }
   }

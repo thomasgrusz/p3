@@ -228,7 +228,7 @@ Player.prototype.handleInput = function (keyInput) {
    *  which itself contains the x-coordinates of the actual lightgreen selector-box.
    *  If the return key is pressed, the character with the lightgreen
    *  selector-box around it is chosen for the game and characterSelectedFlag
-   *  is set to true, so the game can start. characterSelectedFlag is tested also tested for
+   *  is set to true, so the game can start. characterSelectedFlag is also tested for
    *  in the main() game-loop in engin.js.
    */
   if (
