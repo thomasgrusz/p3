@@ -8,11 +8,12 @@ import { Timer } from "./Timer.js";
 /**
  *   Define app object
  */
-export const app = {};
-app.pauseFlag;
-app.allEnemies = [];
-app.allCollectibles = [];
-app.allRocks = [];
+export const app = {
+  pauseFlag: undefined,
+  allEnemies: [],
+  allCollectibles: [],
+  allRocks: [],
+};
 
 /*
  *   Helper functions
@@ -21,7 +22,7 @@ app.allRocks = [];
 /**
  *  Return a random number between the 'lower' and 'upper' parameters.
  */
-app.random_number = function (lower, upper) {
+app.random_number = (lower, upper) => {
   if (lower === 0) {
     return Math.floor(Math.random() * (upper + 1));
   } else {
@@ -32,7 +33,7 @@ app.random_number = function (lower, upper) {
 /**
  *  Display a panel with rounded corners on the canvas.
  */
-app.displayPanel = function (x, y, width, height, fillColor) {
+app.displayPanel = (x, y, width, height, fillColor) => {
   ctx.fillStyle = fillColor;
   ctx.beginPath();
   ctx.moveTo(x, y);
@@ -55,7 +56,7 @@ app.displayPanel = function (x, y, width, height, fillColor) {
 /**
  *  Display a panel-outline with rounded corners on the canvas.
  */
-app.displayPanelOutline = function (x, y, width, height, outlineColor) {
+app.displayPanelOutline = (x, y, width, height, outlineColor) => {
   ctx.lineWidth = 5;
   ctx.strokeStyle = outlineColor;
   ctx.beginPath();
@@ -82,7 +83,7 @@ app.displayPanelOutline = function (x, y, width, height, outlineColor) {
  *  the presence of a rock left, right, down or up in that order.
  *  The function is called by the player.handleInput() method in app.js.
  */
-app.isRock = function (playerXIndex, playerYIndex) {
+app.isRock = (playerXIndex, playerYIndex) => {
   var isRockLRDU = [false, false, false, false];
   app.allRocks.forEach(function (rock) {
     if (
@@ -118,7 +119,7 @@ app.isRock = function (playerXIndex, playerYIndex) {
  *  in the same array and return a boolean value.
  *  This function is called by the rock.reset() method.
  */
-app.overlap = function (array, objectIndex) {
+app.overlap = (array, objectIndex) => {
   if (objectIndex > 0) {
     for (var i = 0; i < objectIndex; i++) {
       if (
@@ -138,7 +139,7 @@ app.overlap = function (array, objectIndex) {
  *  The function returns the value true if there is an overlap.
  *  This function is called by the rock.reset() method in app.js.
  */
-app.isGem = function (objectIndex) {
+app.isGem = (objectIndex) => {
   var returnValue = false;
   app.allCollectibles.forEach(function (collectible) {
     if (
@@ -161,30 +162,32 @@ app.isGem = function (objectIndex) {
  *   - the player object into a variable called 'player'
  *   - the timer object into a variable called 'timer'
  */
-for (var i = 1; i <= 3; i++) {
+for (let i = 1; i <= 3; i++) {
   app.allEnemies.push(new Enemy());
 }
-for (i = 1; i <= 2; i++) {
+for (let i = 1; i <= 2; i++) {
   app.allCollectibles.push(new Collectible());
 }
-for (i = 1; i <= 2; i++) {
+for (let i = 1; i <= 2; i++) {
   app.allRocks.push(new Rock());
 }
+
+// Export player and timer
 export const player = new Player();
 export const timer = new Timer();
 
 /**
  *  Listen for key strokes and send keys to player.handleInput() prototype method.
  */
-document.addEventListener("keydown", function (e) {
+document.addEventListener("keydown", (e) => {
   var allowedKeys = {
-    37: "left",
-    38: "up",
-    39: "right",
-    40: "down",
-    32: "space",
-    13: "return",
+    ArrowLeft: "left",
+    ArrowUp: "up",
+    ArrowRight: "right",
+    ArrowDown: "down",
+    Space: "space",
+    Enter: "return",
   };
 
-  player.handleInput(allowedKeys[e.keyCode]);
+  player.handleInput(allowedKeys[e.code]);
 });

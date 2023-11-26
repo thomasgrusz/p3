@@ -1,7 +1,5 @@
 import { Resources } from "./resources.js";
-import { app } from "./app.js";
-import { player } from "./app.js";
-import { timer } from "./app.js";
+import { app, player, timer } from "./app.js";
 
 /* Engine.js
  * This file provides the game loop functionality (update entities and render),
@@ -61,32 +59,29 @@ function main() {
    * If the player has gathered 200 points before the time is up
    * (player.gameWon = true) call the gameWon() function in engine.js.
    */
-  if (player.startScreenDisplay === true) {
+  if (player.startScreenDisplay) {
     startScreen();
   }
 
-  if (
-    player.characterSelectedFlag === false &&
-    player.startScreenDisplay === false
-  ) {
+  if (!player.characterSelectedFlag && !player.startScreenDisplay) {
     selectPlayer();
   }
 
   if (
-    app.pauseFlag === false &&
-    player.characterSelectedFlag === true &&
-    player.alive === true &&
-    player.gameWon === false
+    !app.pauseFlag &&
+    player.characterSelectedFlag &&
+    player.alive &&
+    !player.gameWon
   ) {
     update(dt);
     render();
   }
 
-  if (player.alive === false) {
+  if (!player.alive) {
     gameOver();
   }
 
-  if (player.gameWon === true) {
+  if (player.gameWon) {
     gameWon();
   }
 
@@ -128,10 +123,10 @@ function update(dt) {
  * player object.
  */
 function updateEntities(dt) {
-  app.allEnemies.forEach(function (enemy) {
+  app.allEnemies.forEach((enemy) => {
     enemy.update(dt);
   });
-  app.allCollectibles.forEach(function (collectible) {
+  app.allCollectibles.forEach((collectible) => {
     collectible.update();
   });
   player.update();
@@ -140,10 +135,10 @@ function updateEntities(dt) {
 function checkCollisions() {
   /* Check collisions between player and all enemies and collectibles.
    */
-  app.allEnemies.forEach(function (enemy) {
+  app.allEnemies.forEach((enemy) => {
     player.collisionDetect(enemy);
   });
-  app.allCollectibles.forEach(function (collectible) {
+  app.allCollectibles.forEach((collectible) => {
     player.collisionDetect(collectible);
   });
 }
@@ -163,25 +158,23 @@ function renderBackground() {
   /* This array holds the relative URL to the image used
    * for that particular row of the game level.
    */
-  var rowImages = [
-      "images/water-block.png", // Top row is water
-      "images/stone-block.png", // Row 1 of 3 of stone
-      "images/stone-block.png", // Row 2 of 3 of stone
-      "images/stone-block.png", // Row 3 of 3 of stone
-      "images/grass-block.png", // Row 1 of 2 of grass
-      "images/grass-block.png", // Row 2 of 2 of grass
-    ],
-    numRows = 6,
-    numCols = 5,
-    row,
-    col;
+  const rowImages = [
+    "images/water-block.png", // Top row is water
+    "images/stone-block.png", // Row 1 of 3 of stone
+    "images/stone-block.png", // Row 2 of 3 of stone
+    "images/stone-block.png", // Row 3 of 3 of stone
+    "images/grass-block.png", // Row 1 of 2 of grass
+    "images/grass-block.png", // Row 2 of 2 of grass
+  ];
+  const numRows = 6;
+  const numCols = 5;
 
   /* Loop through the number of rows and columns we've defined above
    * and, using the rowImages array, draw the correct image for that
    * portion of the "grid"
    */
-  for (row = 0; row < numRows; row++) {
-    for (col = 0; col < numCols; col++) {
+  for (let row = 0; row < numRows; row++) {
+    for (let col = 0; col < numCols; col++) {
       /* The drawImage function of the canvas' context element
        * requires 3 parameters: the image to draw, the x coordinate
        * to start drawing and the y coordinate to start drawing.
@@ -202,13 +195,13 @@ function renderEntities() {
   /* Loop through all of the objects within the app.allEnemies array and call
    * the render function you have defined.
    */
-  app.allCollectibles.forEach(function (collectible) {
+  app.allCollectibles.forEach((collectible) => {
     collectible.render();
   });
-  app.allRocks.forEach(function (rock) {
+  app.allRocks.forEach((rock) => {
     rock.render();
   });
-  app.allEnemies.forEach(function (enemy) {
+  app.allEnemies.forEach((enemy) => {
     enemy.render();
   });
   player.render();
@@ -222,13 +215,13 @@ function renderEntities() {
  * has been pressed (in app.js player.handleInput method).
  */
 function reset() {
-  app.allEnemies.forEach(function (enemy) {
+  app.allEnemies.forEach((enemy) => {
     enemy.reset();
   });
-  app.allCollectibles.forEach(function (collectible) {
+  app.allCollectibles.forEach((collectible) => {
     collectible.reset();
   });
-  app.allRocks.forEach(function (rock) {
+  app.allRocks.forEach((rock) => {
     rock.reset();
   });
   player.reset();
@@ -292,7 +285,6 @@ function startScreen() {
   ctx.fillText("press return to start!", 150, 480);
   if (player.startFirstGame === true) {
     player.startScreenDisplay = false;
-
     const footer = doc.querySelector("footer");
     footer.innerHTML = "";
     const node = doc.createElement("h4");
@@ -368,8 +360,3 @@ Resources.load([
   "images/Rock.png",
 ]);
 Resources.onReady(init);
-
-/* Assign the canvas' context object to the global variable (the window
- * object when run in a browser) so that developers can use it more easily
- * from within their app.js files.
- */

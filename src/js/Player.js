@@ -84,7 +84,7 @@ export class Player {
    */
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    for (var i = 1; i <= this.lives; i++) {
+    for (let i = 1; i <= this.lives; i++) {
       ctx.drawImage(Resources.get("images/Heart.png"), -30 + i * 40, 525);
     }
   }
@@ -101,7 +101,7 @@ export class Player {
    *  This function is called by the checkCollisions() function in engine.js.
    */
   collisionDetect(collisionObject) {
-    for (var j = 0; j <= 5; j++) {
+    for (let j = 0; j <= 5; j++) {
       if (
         collisionObject.y === collisionObject.yCoords[j] &&
         this.y === this.yCoords[j]
@@ -216,7 +216,7 @@ export class Player {
        *  there are rocks on the Left, Right, Down and Up of the player in
        *  that order. The array is loaded by calling app.isRock().
        */
-      var isRockLRDU = app.isRock(
+      let isRockLRDU = app.isRock(
         this.xCoords.indexOf(this.x),
         this.yCoords.indexOf(this.y)
       );
