@@ -3,6 +3,7 @@ const htmlmin = require("gulp-htmlmin");
 const terser = require("gulp-terser");
 const rename = require("gulp-rename");
 const del = require("del");
+const cssmin = require("gulp-cssmin");
 // const babel = require("gulp-babel");
 
 // Clean the "docs" folder
@@ -48,6 +49,7 @@ async function processCSS() {
   return gulp
     .src("src/css/*.css")
     .pipe(autoprefixer.default())
+    .pipe(cssmin())
     .pipe(gulp.dest("docs/css"));
 }
 
