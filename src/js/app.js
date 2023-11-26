@@ -1,3 +1,6 @@
+import { Resources } from "./resources.js";
+import { ctx } from "./engine.js";
+
 /**
  *  Define Enemy class and corresponding prototype methods.
  *  This function is called at the end of app.js using the 'new' keyword to
@@ -520,7 +523,7 @@ Timer.prototype.render = function () {
  *   Define 'global' variables and helper functions within global object app
  *
  */
-var app = {};
+export const app = {};
 app.pauseFlag;
 app.allEnemies = [];
 app.allCollectibles = [];
@@ -684,8 +687,8 @@ for (i = 1; i <= 2; i++) {
 for (i = 1; i <= 2; i++) {
   app.allRocks.push(new Rock());
 }
-var player = new Player();
-var timer = new Timer();
+export const player = new Player();
+export const timer = new Timer();
 
 /**
  *  Listen for key strokes and send keys to player.handleInput() prototype method.
