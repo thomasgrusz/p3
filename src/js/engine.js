@@ -343,7 +343,11 @@ function gameWon() {
  * callback method, so that when all of these images are properly
  * loaded the game will start.
  */
-function loadResources() {
+// loadResources(); is commented out, because this module is
+// imported by startGame.js with an import() statement. There
+// the loadResources function is invoked.
+// loadResources();
+export function loadResources() {
   Resources.load([
     "images/stone-block.png",
     "images/water-block.png",
@@ -362,5 +366,3 @@ function loadResources() {
   ]);
   Resources.onReady(init);
 }
-
-export default loadResources;

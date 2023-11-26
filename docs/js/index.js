@@ -1,1 +1,1 @@
-import loadResources from"./engine.js";loadResources();
+import startGame from"./startGame.js";
