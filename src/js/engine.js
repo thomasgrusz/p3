@@ -21,11 +21,11 @@ import { app, player, timer } from "./app.js";
  * create the canvas element, grab the 2D context for that canvas
  * set the canvas elements height/width and add it to the DOM.
  */
-var doc = document;
-var win = window;
-var canvas = doc.createElement("canvas");
+const doc = document;
+const win = window;
+const canvas = doc.createElement("canvas");
 export let ctx = canvas.getContext("2d");
-var lastTime;
+let lastTime;
 
 canvas.width = 505;
 canvas.height = 606;
@@ -41,7 +41,7 @@ function main() {
    * would be the same for everyone (regardless of how fast their
    * computer is) - hurray time!
    */
-  var now = Date.now(),
+  let now = Date.now(),
     dt = (now - lastTime) / 1000.0;
 
   /* Check the game state and call the appropriate function.
@@ -245,7 +245,7 @@ function selectPlayer() {
   app.displayPanelOutline(30, 200, 445, 210, "green");
   /* Draw player characters
    */
-  for (var i = 0; i < player.characters.length; i++) {
+  for (let i = 0; i < player.characters.length; i++) {
     ctx.drawImage(Resources.get(player.characters[i]), 20 + i * 90, 180);
   }
   /* Display character selection message and draw lightgreen selector box
@@ -343,20 +343,24 @@ function gameWon() {
  * callback method, so that when all of these images are properly
  * loaded the game will start.
  */
-Resources.load([
-  "images/stone-block.png",
-  "images/water-block.png",
-  "images/grass-block.png",
-  "images/enemy-bug.png",
-  "images/char-boy.png",
-  "images/char-cat-girl.png",
-  "images/char-horn-girl.png",
-  "images/char-pink-girl.png",
-  "images/char-princess-girl.png",
-  "images/Heart.png",
-  "images/Gem Blue.png",
-  "images/Gem Green.png",
-  "images/Gem Orange.png",
-  "images/Rock.png",
-]);
-Resources.onReady(init);
+function loadResources() {
+  Resources.load([
+    "images/stone-block.png",
+    "images/water-block.png",
+    "images/grass-block.png",
+    "images/enemy-bug.png",
+    "images/char-boy.png",
+    "images/char-cat-girl.png",
+    "images/char-horn-girl.png",
+    "images/char-pink-girl.png",
+    "images/char-princess-girl.png",
+    "images/Heart.png",
+    "images/Gem Blue.png",
+    "images/Gem Green.png",
+    "images/Gem Orange.png",
+    "images/Rock.png",
+  ]);
+  Resources.onReady(init);
+}
+
+export default loadResources;
