@@ -364,5 +364,11 @@ export function loadResources() {
     "images/Gem Orange.png",
     "images/Rock.png",
   ]);
+  Resources.onReady(fadeInBody);
   Resources.onReady(init);
+}
+
+// Display HTML body after all assets have been loaded
+function fadeInBody() {
+  document.body.classList.remove("fade");
 }

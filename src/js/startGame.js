@@ -26,11 +26,13 @@ function startGame() {
   } else loadGameEngine();
 
   function renderMsg(message) {
-    // empty footer
+    // empty the footer
     const myFooter = document.querySelector("footer");
     myFooter.style.padding = "4rem";
-
+    //write message into footer
     myFooter.textContent = message;
+    // fade in the html body
+    document.body.classList.remove("fade");
   }
 
   async function loadGameEngine() {
