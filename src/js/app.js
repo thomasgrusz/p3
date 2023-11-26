@@ -1,5 +1,4 @@
 /**
- *  @class
  *  Define Enemy class and corresponding prototype methods.
  *  This function is called at the end of app.js using the 'new' keyword to
  *  instantiate enemy objects.
@@ -37,7 +36,6 @@ Enemy.prototype.reset = function () {
  *  If there is a collision with the player, the enemy gets reset and the player
  *  gets placed at its starting x,y-position and loses a life.
  *  This function is called by the updateEntities() function in engine.js.
- *  @param {number} dt - Speed equalizer across devices
  */
 Enemy.prototype.update = function (dt) {
   if (this.x < this.maxXCoord) {
@@ -64,7 +62,6 @@ Enemy.prototype.render = function () {
 };
 
 /**
- *  @class
  *  Define Player class and corresponding prototype methods.
  *  This function is called at the bottom of app.js using the 'new' keyword to
  *  instantiate a player object.
@@ -164,7 +161,6 @@ Player.prototype.render = function () {
  *  collisionFlag for the collisionObject is set to true.
  *  The collisionFlag will be tested for in enemy.update() and collectibles.update() methods.
  *  This function is called by the checkCollisions() function in engine.js.
- *  @param {object} collisionObject - Object to check player-collision against
  */
 Player.prototype.collisionDetect = function (collisionObject) {
   for (var j = 0; j <= 5; j++) {
@@ -209,7 +205,6 @@ Player.prototype.renderScore = function () {
  *  Handle input from keyboard.
  *  This function is called by the addEventListener() function at the end of
  *  app.js.
- *  @param {string} keyInput
  */
 Player.prototype.handleInput = function (keyInput) {
   /**
@@ -319,7 +314,6 @@ Player.prototype.handleInput = function (keyInput) {
 };
 
 /**
- *  @class
  *  Define Collectible class and corresponding prototype methods.
  *  This function is called at the end of app.js using the 'new' keyword to
  *  instantiate collectible objects.
@@ -402,7 +396,6 @@ Collectible.prototype.render = function () {
 };
 
 /**
- *  @class
  *  Define Rock class and corresponding prototype methods.
  *  This function is called at the end of app.js using the 'new' keyword to
  *  instantiate rock objects.
@@ -445,7 +438,6 @@ Rock.prototype.render = function () {
 };
 
 /**
- * @class
  *  Define Timer class and corresponding prototype methods.
  *  This function is called at the end of app.js using the 'new' keyword to
  *  instantiate a timer object.
@@ -542,9 +534,6 @@ app.allRocks = [];
 
 /**
  *  Return a random number between the 'lower' and 'upper' parameters.
- *  @param {number} lower - Lower number of range in which to set a random number in
- *  @param {number} upper - Upper number of range in which to set a random number in
- *  @returns {number} Random number between lower and upper
  */
 app.random_number = function (lower, upper) {
   if (lower === 0) {
@@ -556,11 +545,6 @@ app.random_number = function (lower, upper) {
 
 /**
  *  Display a panel with rounded corners on the canvas.
- *  @param {number} x - x-coordinate for upper left corner of panel
- *  @param {number} y - y-coordinate for upper left corner of panel
- *  @param {number} width - width of panel
- *  @param {number} height - height of panel
- *  @param {number} fillColor - color of panel
  */
 app.displayPanel = function (x, y, width, height, fillColor) {
   ctx.fillStyle = fillColor;
@@ -584,11 +568,6 @@ app.displayPanel = function (x, y, width, height, fillColor) {
 
 /**
  *  Display a panel-outline with rounded corners on the canvas.
- *  @param {number} x - x-coordinate for upper left corner of outline
- *  @param {number} y - y-coordinate for upper left corner of outline
- *  @param {number} width - width of outline
- *  @param {number} height - height of outline
- *  @param {number} outlineColor - color of outline
  */
 app.displayPanelOutline = function (x, y, width, height, outlineColor) {
   ctx.lineWidth = 5;
@@ -616,9 +595,6 @@ app.displayPanelOutline = function (x, y, width, height, outlineColor) {
  *  The function returns an array containing 4 boolean variables that indicate
  *  the presence of a rock left, right, down or up in that order.
  *  The function is called by the player.handleInput() method in app.js.
- *  @param {number} playerXIndex - index for players x-coordinate in player.xCoords array
- *  @param {number} playerYIndex - index for players y-coordinate in player.yCoords array
- *  @returns {array} isRockLRDU
  */
 app.isRock = function (playerXIndex, playerYIndex) {
   var isRockLRDU = [false, false, false, false];
@@ -655,9 +631,6 @@ app.isRock = function (playerXIndex, playerYIndex) {
  *  Check if there is an overlap between an array's object and the other elements
  *  in the same array and return a boolean value.
  *  This function is called by the rock.reset() method.
- *  @param {array} array - array of objects
- *  @param {number} objectIndex - index of the object in array to test overlap against
- *  @returns {boolean}
  */
 app.overlap = function (array, objectIndex) {
   if (objectIndex > 0) {
@@ -678,8 +651,6 @@ app.overlap = function (array, objectIndex) {
  *  all existing collectibles on the screen (app.allCollectibles array).
  *  The function returns the value true if there is an overlap.
  *  This function is called by the rock.reset() method in app.js.
- *  @param {number} objectIndex - index of the object in array to test overlap against
- *  @returns {boolean}
  */
 app.isGem = function (objectIndex) {
   var returnValue = false;
