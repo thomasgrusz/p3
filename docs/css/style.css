@@ -13,7 +13,7 @@ body {
   font-family: "Lobster";
   text-align: center;
   background-color: #000;
-  color: rgb(247, 247, 168);
+  color: hsl(60, 90%, 60%);
   height: 100dvh;
   overflow: hidden;
 }
